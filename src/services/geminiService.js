@@ -1,6 +1,5 @@
 const OPENROUTER_API_KEY =
-  "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";
-
+  process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 async function askAI(prompt) {
