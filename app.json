@@ -1,29 +1,38 @@
 {
   "expo": {
-    "name": "SmartLensAI3",
+    "name": "Optix",
     "slug": "SmartLensAI3",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.kunalsood19.optix"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0ef14e16-d287-4bd7-904c-7feea130b3d8"
+      }
+    },
+    "owner": "kunalsood19",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0ef14e16-d287-4bd7-904c-7feea130b3d8"
+    },
+    "ios": {}
   }
 }

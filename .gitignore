@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+assets/OllamaSetup.exe
 # Expo
 .expo/
 dist/
@@ -31,7 +31,10 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+# environment files
+.env
+.env.*
+!.env.example
 
 # typescript
 *.tsbuildinfo
