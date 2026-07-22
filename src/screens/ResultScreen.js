@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
   Image, TextInput, Alert, ActivityIndicator,
@@ -13,6 +13,53 @@ import { saveDocument } from "../services/storageService";
 import * as Clipboard from "expo-clipboard";
 import Markdown from "react-native-markdown-display";
 import { generateAndSharePDF } from "../services/pdfService";
+
+// --- Custom Typewriter Animation Component ---
+function TypewriterText({ text, speed = 15, style, isMarkdown = false }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const currentTextRef = useRef("");
+  const indexRef = useRef(0);
+  const animationFrameRef = useRef(null);
+  const lastUpdateTimeRef = useRef(0);
+
+  useEffect(() => {
+    setDisplayedText("");
+    currentTextRef.current = "";
+    indexRef.current = 0;
+    lastUpdateTimeRef.current = Date.now();
+
+    if (!text) return;
+
+    const animate = () => {
+      const now = Date.now();
+      if (now - lastUpdateTimeRef.current >= speed) {
+        if (indexRef.current < text.length) {
+          currentTextRef.current += text.charAt(indexRef.current);
+          setDisplayedText(currentTextRef.current);
+          indexRef.current += 1;
+          lastUpdateTimeRef.current = now;
+        } else {
+          return;
+        }
+      }
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [text, speed]);
+
+  if (isMarkdown) {
+    return <Markdown style={{ body: style }}>{displayedText}</Markdown>;
+  }
+
+  return <Text style={style}>{displayedText}</Text>;
+}
 
 export default function ResultScreen({ route, navigation }) {
   const { imageUri, base64, extractedText, mode } = route.params;
@@ -194,7 +241,13 @@ export default function ResultScreen({ route, navigation }) {
                   </View>
                   <View style={styles.card}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                      <Markdown style={{ body: styles.summaryText }}>{aiSummary}</Markdown>
+                      {/* Integrated animated Markdown via TypewriterText component */}
+                      <TypewriterText 
+                        text={aiSummary} 
+                        speed={10} 
+                        style={styles.summaryText} 
+                        isMarkdown={true}
+                      />
                     </ScrollView>
                   </View>
                 </>
@@ -236,7 +289,16 @@ export default function ResultScreen({ route, navigation }) {
               )}
               {chatHistory.map((msg, i) => (
                 <View key={i} style={[styles.bubble, msg.role === "user" ? styles.userBubble : styles.aiBubble]}>
-                  <Text style={[styles.bubbleText, msg.role === "user" && styles.userText]}>{msg.text}</Text>
+                  {msg.role === "user" ? (
+                    <Text style={[styles.bubbleText, styles.userText]}>{msg.text}</Text>
+                  ) : (
+                    /* Uses standard character animation loop layout logic */
+                    <TypewriterText 
+                      text={msg.text} 
+                      speed={12} 
+                      style={styles.bubbleText} 
+                    />
+                  )}
                 </View>
               ))}
               {chatLoading && (

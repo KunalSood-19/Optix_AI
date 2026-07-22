@@ -1,48 +1,49 @@
+// ==========================================
+// OPTIX DOCUMENT OCR SCANNING ENGINE
+// ==========================================
+
 export async function extractTextFromImage(imageUri) {
   try {
-    const formData = new FormData();
-
-    formData.append("apikey", "K85037255188957");
-    formData.append("language", "eng");
-    formData.append("isOverlayRequired", "false");
-    formData.append("OCREngine", "2");
-
-    formData.append("file", {
-      uri: imageUri,
-      type: "image/jpeg",
-      name: "image.jpg",
-    });
-
-    const response = await fetch(
-      "https://api.ocr.space/parse/image",
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
-
-    const data = await response.json();
-
-    console.log(
-      "OCR RESPONSE:",
-      JSON.stringify(data, null, 2)
-    );
-
-    if (data.IsErroredOnProcessing) {
-      console.log("OCR ERROR:", data);
-      return "";
+    if (!imageUri) {
+      throw new Error("No image target context reference URI provided.");
     }
 
-    const extractedText =
-      data?.ParsedResults?.[0]?.ParsedText || "";
+    const formData = new FormData();
+    formData.append("file", {
+      uri: imageUri,
+      name: "document_capture.jpg",
+      type: "image/jpeg",
+    });
+    
+    // Optional parameter flags mapping for standard corporate parser APIs
+    formData.append("apikey", process.env.EXPO_PUBLIC_OCR_SPACE_KEY || "helloworld");
+    formData.append("language", "eng");
+    formData.append("isOverlayRequired", "false");
 
-    return extractedText.trim();
+    const response = await fetch("https://api.ocr.space/parse/image", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`OCR processing server returned status error code: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Safety token checking structure for API output variants
+    if (data?.OCRExitCode > 2) {
+      throw new Error(data?.ErrorMessage?.[0] || "OCR internal processor error engine exception.");
+    }
+
+    const parsedText = data?.ParsedResults?.[0]?.ParsedText;
+    return parsedText ? parsedText.trim() : "";
 
   } catch (error) {
     console.log("OCR SERVICE ERROR:", error);
-    return "";
+    return ""; // Soft structural fallback returns an empty string block for the app context UI safely
   }
 }

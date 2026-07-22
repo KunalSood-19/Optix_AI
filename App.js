@@ -13,16 +13,33 @@ import QRScannerScreen from "./src/screens/QRScannerScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import AgentScreen from "./src/screens/AgentScreen";
+import ResetPasswordScreen from "./src/screens/ResetPasswordScreen";
+import { identifyObject } from "./src/services/geminiService";
 
 import { supabase } from "./src/services/supabaseClient";
 
 const Stack = createNativeStackNavigator();
 
+const linking = {
+  prefixes: ["optix://"],
+  config: {
+    screens: {
+      ResetPassword: "reset-password",
+    },
+  },
+};
+
 function VaultStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="VaultHome" component={VaultScreen} />
-      <Stack.Screen name="DocumentDetail" component={DocumentDetailScreen} />
+      <Stack.Screen
+        name="VaultHome"
+        component={VaultScreen}
+      />
+      <Stack.Screen
+        name="DocumentDetail"
+        component={DocumentDetailScreen}
+      />
     </Stack.Navigator>
   );
 }
@@ -30,12 +47,35 @@ function VaultStack() {
 function AppStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Scanner" component={ScannerScreen} />
-      <Stack.Screen name="HomeDashboard" component={HomeScreen} />
-      <Stack.Screen name="Result" component={ResultScreen} />
-      <Stack.Screen name="QRScanner" component={QRScannerScreen} />
-      <Stack.Screen name="Vault" component={VaultStack} />
-      <Stack.Screen name="Agent" component={AgentScreen} />
+      <Stack.Screen
+        name="HomeDashboard"
+        component={HomeScreen}
+      />
+
+      <Stack.Screen
+        name="Scanner"
+        component={ScannerScreen}
+      />
+
+      <Stack.Screen
+        name="Result"
+        component={ResultScreen}
+      />
+
+      <Stack.Screen
+        name="QRScanner"
+        component={QRScannerScreen}
+      />
+
+      <Stack.Screen
+        name="Vault"
+        component={VaultStack}
+      />
+
+      <Stack.Screen
+        name="Agent"
+        component={AgentScreen}
+      />
     </Stack.Navigator>
   );
 }
@@ -43,8 +83,20 @@ function AppStack() {
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+      />
+
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+      />
+
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPasswordScreen}
+      />
     </Stack.Navigator>
   );
 }
@@ -54,23 +106,24 @@ export default function App() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Check existing session on app launch
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setChecking(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setSession(session);
+        setChecking(false);
+      });
 
-    // Listen for login/logout
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Splash/loading while checking session
   if (checking) {
     return (
       <View
@@ -81,13 +134,16 @@ export default function App() {
           backgroundColor: "#F4F5F9",
         }}
       >
-        <ActivityIndicator size="large" color="#D97757" />
+        <ActivityIndicator
+          size="large"
+          color="#D97757"
+        />
       </View>
     );
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar style="dark" />
       {session ? <AppStack /> : <AuthStack />}
     </NavigationContainer>

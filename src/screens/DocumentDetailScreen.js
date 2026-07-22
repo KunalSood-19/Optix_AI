@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,55 @@ import * as Clipboard from "expo-clipboard";
 import { chatWithDocument } from "../services/geminiService";
 import { updateDocumentTitle } from "../services/storageService";
 
+// --- Custom Typewriter Animation Component ---
+function TypewriterText({ text, speed = 20, style, selectable }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const currentTextRef = useRef("");
+  const indexRef = useRef(0);
+  const animationFrameRef = useRef(null);
+  const lastUpdateTimeRef = useRef(0);
+
+  useEffect(() => {
+    // Reset state whenever new text content arrives
+    setDisplayedText("");
+    currentTextRef.current = "";
+    indexRef.current = 0;
+    lastUpdateTimeRef.current = Date.now();
+
+    if (!text) return;
+
+    const animate = () => {
+      const now = Date.now();
+      if (now - lastUpdateTimeRef.current >= speed) {
+        if (indexRef.current < text.length) {
+          currentTextRef.current += text.charAt(indexRef.current);
+          setDisplayedText(currentTextRef.current);
+          indexRef.current += 1;
+          lastUpdateTimeRef.current = now;
+        } else {
+          return; // Animation completes smoothly
+        }
+      }
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [text, speed]);
+
+  return (
+    <Text selectable={selectable} style={style}>
+      {displayedText}
+    </Text>
+  );
+}
+
+// --- Main Document Screen ---
 export default function DocumentDetailScreen({ route, navigation }) {
   const { doc } = route.params;
   const [activeTab, setActiveTab] = useState("summary");
@@ -124,7 +173,13 @@ export default function DocumentDetailScreen({ route, navigation }) {
                 </TouchableOpacity>
               </View>
               <View style={styles.card}>
-                <Text selectable style={styles.summaryText}>{doc.aiSummary}</Text>
+                {/* Replaced static Text with Animated Typewriter component */}
+                <TypewriterText 
+                  selectable 
+                  text={doc.aiSummary || "No summary layout processed yet."} 
+                  speed={15} 
+                  style={styles.summaryText} 
+                />
               </View>
               <Text style={styles.label}>Saved on</Text>
               <View style={styles.metaRow}>
@@ -173,9 +228,19 @@ export default function DocumentDetailScreen({ route, navigation }) {
                   key={i}
                   style={[styles.bubble, msg.role === "user" ? styles.userBubble : styles.aiBubble]}
                 >
-                  <Text style={[styles.bubbleText, msg.role === "user" && styles.userText]}>
-                    {msg.text}
-                  </Text>
+                  {msg.role === "user" ? (
+                    <Text style={[styles.bubbleText, styles.userText]}>
+                      {msg.text}
+                    </Text>
+                  ) : (
+                    /* Uses dynamic rendering configuration across user inquiries */
+                    <TypewriterText 
+                      selectable 
+                      text={msg.text} 
+                      speed={10} 
+                      style={styles.bubbleText} 
+                    />
+                  )}
                 </View>
               ))}
               {chatLoading && (

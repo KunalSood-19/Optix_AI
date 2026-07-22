@@ -1,7 +1,11 @@
-const OPENROUTER_API_KEY = "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";
+const OPENROUTER_API_KEY = process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
 
 export async function askAgent(question) {
   try {
+    if (!OPENROUTER_API_KEY) {
+      throw new Error("OpenRouter API Key configuration is missing.");
+    }
+
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -13,12 +17,12 @@ export async function askAgent(question) {
           "X-Title": "SmartLens AI",
         },
         body: JSON.stringify({
-          model: "google/gemma-3-4b-it",
+          model: "google/gemini-2.5-flash", // Upgraded to Gemini 2.5 Flash for high-speed agent execution
           messages: [
             {
               role: "system",
               content:
-                "You are SmartLens Agent, a helpful AI assistant. Answer clearly and concisely.",
+                "You are SmartLens Agent, a helpful AI assistant. Answer clearly, structured, and concisely.",
             },
             {
               role: "user",

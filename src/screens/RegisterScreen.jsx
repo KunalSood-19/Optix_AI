@@ -50,31 +50,31 @@ export default function RegisterScreen({ navigation }) {
 
   const passwordStrength = () => {
     if (!password) return null;
-    if (password.length < 6) return { label: "Too short", color: "#F44336", width: "25%" };
+    if (password.length < 6) return { label: "Too short", color: "#FF5252", width: "25%" };
     if (password.length < 8) return { label: "Weak", color: "#FF9800", width: "50%" };
-    if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) return { label: "Fair", color: "#FFC107", width: "70%" };
-    return { label: "Strong", color: "#00C853", width: "100%" };
+    if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) return { label: "Fair", color: "#FFD740", width: "70%" };
+    return { label: "Strong", color: "#00E676", width: "100%" };
   };
 
   const strength = passwordStrength();
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <StatusBar barStyle="light-content" backgroundColor="#060B1A" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
 
-          {/* Header */}
+          {/* Header Action Row */}
           <View style={styles.topRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back-outline" size={20} color="#1A1A2E" />
+              <Ionicons name="arrow-back-outline" size={20} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
-          {/* Logo */}
+          {/* Branding Logo Structure */}
           <View style={styles.logoBlock}>
             <View style={styles.logoCircle}>
               <Ionicons name="scan-outline" size={32} color="#D97757" />
@@ -82,33 +82,33 @@ export default function RegisterScreen({ navigation }) {
             <Text style={styles.logoText}>Optix</Text>
           </View>
 
-          {/* Card */}
+          {/* Form Content Shell Card Layout */}
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Create account</Text>
             <Text style={styles.cardSub}>Start scanning smarter today</Text>
 
-            {/* Full Name */}
+            {/* Input Form Module: Full Name */}
             <Text style={styles.fieldLabel}>Full Name</Text>
             <View style={styles.inputWrap}>
-              <Ionicons name="person-outline" size={18} color="#9E9E9E" style={styles.inputIcon} />
+              <Ionicons name="person-outline" size={18} color="#8D8FA5" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Your name"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#64687A"
                 value={name}
                 onChangeText={setName}
                 autoCapitalize="words"
               />
             </View>
 
-            {/* Email */}
+            {/* Input Form Module: Email */}
             <Text style={styles.fieldLabel}>Email</Text>
             <View style={styles.inputWrap}>
-              <Ionicons name="mail-outline" size={18} color="#9E9E9E" style={styles.inputIcon} />
+              <Ionicons name="mail-outline" size={18} color="#8D8FA5" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="you@example.com"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#64687A"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -117,25 +117,25 @@ export default function RegisterScreen({ navigation }) {
               />
             </View>
 
-            {/* Password */}
+            {/* Input Form Module: Password */}
             <Text style={styles.fieldLabel}>Password</Text>
             <View style={styles.inputWrap}>
-              <Ionicons name="lock-closed-outline" size={18} color="#9E9E9E" style={styles.inputIcon} />
+              <Ionicons name="lock-closed-outline" size={18} color="#8D8FA5" style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 placeholder="Min. 6 characters"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#64687A"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPass}
                 autoCapitalize="none"
               />
               <TouchableOpacity onPress={() => setShowPass(!showPass)} style={styles.eyeBtn}>
-                <Ionicons name={showPass ? "eye-off-outline" : "eye-outline"} size={18} color="#9E9E9E" />
+                <Ionicons name={showPass ? "eye-off-outline" : "eye-outline"} size={18} color="#8D8FA5" />
               </TouchableOpacity>
             </View>
 
-            {/* Strength bar */}
+            {/* Password Verification Metrics Row Layout */}
             {strength && (
               <View style={styles.strengthWrap}>
                 <View style={styles.strengthTrack}>
@@ -145,31 +145,31 @@ export default function RegisterScreen({ navigation }) {
               </View>
             )}
 
-            {/* Confirm Password */}
+            {/* Input Form Module: Confirm Password */}
             <Text style={[styles.fieldLabel, { marginTop: 12 }]}>Confirm Password</Text>
             <View style={[
               styles.inputWrap,
-              confirmPass && password !== confirmPass && styles.inputError,
+              confirmPass && password !== confirmPass && styles.inputWrapError,
             ]}>
-              <Ionicons name="lock-closed-outline" size={18} color="#9E9E9E" style={styles.inputIcon} />
+              <Ionicons name="lock-closed-outline" size={18} color="#8D8FA5" style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 placeholder="Re-enter password"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#64687A"
                 value={confirmPass}
                 onChangeText={setConfirmPass}
                 secureTextEntry={!showConfirm}
                 autoCapitalize="none"
               />
               <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)} style={styles.eyeBtn}>
-                <Ionicons name={showConfirm ? "eye-off-outline" : "eye-outline"} size={18} color="#9E9E9E" />
+                <Ionicons name={showConfirm ? "eye-off-outline" : "eye-outline"} size={18} color="#8D8FA5" />
               </TouchableOpacity>
             </View>
             {confirmPass && password !== confirmPass && (
               <Text style={styles.errorText}>Passwords don't match</Text>
             )}
 
-            {/* Register Button */}
+            {/* Registration Execution Component Interface element */}
             <TouchableOpacity
               style={[styles.primaryBtn, loading && styles.primaryBtnDisabled, { marginTop: 24 }]}
               onPress={handleRegister}
@@ -188,7 +188,7 @@ export default function RegisterScreen({ navigation }) {
             </Text>
           </View>
 
-          {/* Footer */}
+          {/* Navigation Redirection Layout Footer element */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -203,69 +203,176 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
-  scroll: { flexGrow: 1, paddingHorizontal: 20, paddingBottom: 32 },
-
-  topRow: { paddingTop: 16, marginBottom: 8 },
+  container: { 
+    flex: 1, 
+    backgroundColor: "#060B1A" 
+  },
+  scroll: { 
+    flexGrow: 1, 
+    paddingHorizontal: 20, 
+    paddingBottom: 32 
+  },
+  topRow: { 
+    paddingTop: 16, 
+    marginBottom: 8 
+  },
   backBtn: {
-    width: 36, height: 36, borderRadius: 10,
-    backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#EBEBEB",
-    alignItems: "center", justifyContent: "center",
+    width: 40, 
+    height: 40, 
+    borderRadius: 12,
+    backgroundColor: "#121826", 
+    borderWidth: 1, 
+    borderColor: "rgba(108,99,255,0.15)",
+    alignItems: "center", 
+    justifyContent: "center",
   },
-
-  logoBlock: { alignItems: "center", paddingVertical: 24 },
+  logoBlock: { 
+    alignItems: "center", 
+    paddingVertical: 20 
+  },
   logoCircle: {
-    width: 72, height: 72, borderRadius: 20,
-    backgroundColor: "#EEF0FF", alignItems: "center",
-    justifyContent: "center", marginBottom: 12,
+    width: 72, 
+    height: 72, 
+    borderRadius: 22,
+    backgroundColor: "rgba(219, 119, 87, 0.1)", 
+    alignItems: "center",
+    justifyContent: "center", 
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "rgba(219, 119, 87, 0.2)",
   },
-  logoText: { fontSize: 22, fontWeight: "700", color: "#D97757", letterSpacing: -0.3 },
-
+  logoText: { 
+    fontSize: 24, 
+    fontWeight: "700", 
+    color: "#FFFFFF", 
+    letterSpacing: -0.5 
+  },
   card: {
-    backgroundColor: "#FFFFFF", borderRadius: 20,
-    padding: 24, borderWidth: 1, borderColor: "#EBEBEB",
+    backgroundColor: "#121826", 
+    borderRadius: 24,
+    padding: 24, 
+    borderWidth: 1, 
+    borderColor: "rgba(108,99,255,0.15)",
   },
-  cardTitle: { fontSize: 20, fontWeight: "700", color: "#1A1A2E", marginBottom: 4 },
-  cardSub: { fontSize: 13, color: "#9E9E9E", marginBottom: 24 },
-
+  cardTitle: { 
+    fontSize: 22, 
+    fontWeight: "700", 
+    color: "#FFFFFF", 
+    marginBottom: 4 
+  },
+  cardSub: { 
+    fontSize: 14, 
+    color: "#9AA4BF", 
+    marginBottom: 24 
+  },
   fieldLabel: {
-    fontSize: 12, fontWeight: "700", color: "#555",
-    letterSpacing: 0.5, marginBottom: 8, marginTop: 4,
+    fontSize: 12, 
+    fontWeight: "700", 
+    color: "#9AA4BF",
+    letterSpacing: 0.5, 
+    marginBottom: 8, 
+    marginTop: 4,
+    textTransform: "uppercase"
   },
   inputWrap: {
-    flexDirection: "row", alignItems: "center",
-    backgroundColor: "#F4F5F9", borderRadius: 12,
-    borderWidth: 1, borderColor: "#EBEBEB",
-    paddingHorizontal: 14, marginBottom: 16, height: 50,
+    flexDirection: "row", 
+    alignItems: "center",
+    backgroundColor: "#060B1A", 
+    borderRadius: 14,
+    borderWidth: 1, 
+    borderColor: "rgba(108,99,255,0.1)",
+    paddingHorizontal: 14, 
+    marginBottom: 16, 
+    height: 52,
   },
-  inputError: { borderColor: "#F44336", backgroundColor: "#FFF5F5" },
-  inputIcon: { marginRight: 10 },
-  input: { flex: 1, fontSize: 14, color: "#1A1A2E" },
-  eyeBtn: { padding: 4 },
-
+  inputWrapError: { 
+    borderColor: "#FF5252", 
+    backgroundColor: "rgba(255, 82, 82, 0.05)" 
+  },
+  inputIcon: { 
+    marginRight: 10 
+  },
+  input: { 
+    flex: 1, 
+    fontSize: 15, 
+    color: "#FFFFFF" 
+  },
+  eyeBtn: { 
+    padding: 4 
+  },
   strengthWrap: {
-    flexDirection: "row", alignItems: "center",
-    gap: 10, marginTop: -10, marginBottom: 4,
+    flexDirection: "row", 
+    alignItems: "center",
+    gap: 10, 
+    marginTop: -10, 
+    marginBottom: 4,
   },
   strengthTrack: {
-    flex: 1, height: 4, borderRadius: 2, backgroundColor: "#EBEBEB",
+    flex: 1, 
+    height: 4, 
+    borderRadius: 2, 
+    backgroundColor: "#060B1A",
   },
-  strengthFill: { height: 4, borderRadius: 2 },
-  strengthLabel: { fontSize: 11, fontWeight: "700", minWidth: 48 },
-
-  errorText: { fontSize: 12, color: "#F44336", marginTop: -12, marginBottom: 8 },
-
+  strengthFill: { 
+    height: 4, 
+    borderRadius: 2 
+  },
+  strengthLabel: { 
+    fontSize: 11, 
+    fontWeight: "700", 
+    minWidth: 54, 
+    textAlign: "right" 
+  },
+  errorText: { 
+    fontSize: 12, 
+    color: "#FF5252", 
+    marginTop: -12, 
+    marginBottom: 8,
+    marginLeft: 4
+  },
   primaryBtn: {
-    backgroundColor: "#D97757", borderRadius: 14,
-    height: 52, alignItems: "center", justifyContent: "center",
+    backgroundColor: "#D97757", 
+    borderRadius: 14,
+    height: 54, 
+    alignItems: "center", 
+    justifyContent: "center",
+    shadowColor: "#D97757",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4
   },
-  primaryBtnDisabled: { backgroundColor: "#C5C3F5" },
-  primaryBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-
-  terms: { fontSize: 11, color: "#9E9E9E", textAlign: "center", marginTop: 16, lineHeight: 18 },
-  termsLink: { color: "#D97757", fontWeight: "600" },
-
-  footer: { flexDirection: "row", justifyContent: "center", marginTop: 24 },
-  footerText: { fontSize: 13, color: "#9E9E9E" },
-  footerLink: { fontSize: 13, color: "#D97757", fontWeight: "700" },
+  primaryBtnDisabled: { 
+    backgroundColor: "rgba(217, 119, 87, 0.4)" 
+  },
+  primaryBtnText: { 
+    color: "#FFFFFF", 
+    fontSize: 16, 
+    fontWeight: "700" 
+  },
+  terms: { 
+    fontSize: 12, 
+    color: "#8D8FA5", 
+    textAlign: "center", 
+    marginTop: 18, 
+    lineHeight: 18 
+  },
+  termsLink: { 
+    color: "#D97757", 
+    fontWeight: "600" 
+  },
+  footer: { 
+    flexDirection: "row", 
+    justifyContent: "center", 
+    marginTop: 28 
+  },
+  footerText: { 
+    fontSize: 14, 
+    color: "#9AA4BF" 
+  },
+  footerLink: { 
+    fontSize: 14, 
+    color: "#D97757", 
+    fontWeight: "700" 
+  },
 });

@@ -14,7 +14,14 @@ import { useEffect, useState } from "react";
 import { Image } from "react-native";
 
 const features = [
- 
+  {
+    icon: "eye-outline",
+    label: "Object Identifier",
+    desc: "Identify objects instantly",
+    mode: "objectDetection",
+    color: "#673AB7",
+    bg: "#EDE7F6",
+  },
   {
     icon: "qr-code-outline",
     label: "QR Scanner",
@@ -79,7 +86,9 @@ const features = [
     color: "#7C4DFF",
     bg: "#EDE7F6",
   },
-];export default function HomeScreen({ navigation }) {
+];
+
+export default function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -115,7 +124,6 @@ const features = [
   }
 
   return (
-    
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -123,24 +131,20 @@ const features = [
         {/* Header */}
         <View style={styles.header}>
           <View>
-  <Image
-    source={require("../../assets/optix-logo-Photoro.png")}
-    style={styles.headerLogo}
-    resizeMode="contain"
-  />
-
-  {/* <Text style={styles.tagline}>
-    See · Scan · Understand
-  </Text> */}
-</View>
-         <TouchableOpacity
-  style={styles.avatarCircle}
-  onPress={handleProfilePress}
->
-  <Text style={styles.avatarText}>
-    {user?.email?.charAt(0)?.toUpperCase() || "?"}
-  </Text>
-</TouchableOpacity>
+            <Image
+              source={require("../../assets/optix-logo-Photoro.png")}
+              style={styles.headerLogo}
+              resizeMode="contain"
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.avatarCircle}
+            onPress={handleProfilePress}
+          >
+            <Text style={styles.avatarText}>
+              {user?.email?.charAt(0)?.toUpperCase() || "?"}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Hero Banner */}
@@ -218,11 +222,11 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: "#ffffff",
   },
-headerLogo: {
-width: 200,
-height: 50,
-marginLeft: -75
-},
+  headerLogo: {
+    width: 200,
+    height: 50,
+    marginLeft: -75
+  },
   tagline: {
     fontSize: 12,
     color: "#9E9E9E",
@@ -230,18 +234,18 @@ marginLeft: -75
     letterSpacing: 0.5,
   },
   avatarCircle: {
-  width: 40,
-  height: 40,
-  borderRadius: 20,
-  backgroundColor: "#D97757",
-  alignItems: "center",
-  justifyContent: "center",
-},
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#D97757",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   avatarText: {
-  color: "#FFFFFF",
-  fontSize: 16,
-  fontWeight: "700",
-},
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
 
   /* Hero */
   heroBanner: {
