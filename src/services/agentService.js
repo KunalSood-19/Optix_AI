@@ -1,33 +1,50 @@
-const OPENROUTER_API_KEY = process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
+const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 
-export async function askAgent(question) {
-  try {
-    if (!OPENROUTER_API_KEY) {
-      throw new Error("OpenRouter API Key configuration is missing.");
+/**
+ * Exponential backoff retry wrapper
+ */
+async function withRetry(fn, retries = 3, delayMs = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      console.log(`[Retry ${i + 1}/${retries}] Failed: ${error.message}`);
+      if (i === retries - 1) throw error;
+      await new Promise((res) => setTimeout(res, delayMs * Math.pow(2, i)));
+    }
+  }
+}
+
+export async function askAgent(historyOrQuestion) {
+  return withRetry(async () => {
+    if (!GROQ_API_KEY) {
+      throw new Error("Groq API Key configuration is missing.");
+    }
+
+    let messages = [];
+    if (Array.isArray(historyOrQuestion)) {
+      messages = historyOrQuestion;
+    } else {
+      messages = [{ role: "user", content: historyOrQuestion }];
     }
 
     const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          Authorization: `Bearer ${GROQ_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://smartlens.ai",
-          "X-Title": "SmartLens AI",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash", // Upgraded to Gemini 2.5 Flash for high-speed agent execution
+          model: "qwen/qwen3.6-27b",
           messages: [
             {
               role: "system",
               content:
-                "You are SmartLens Agent, a helpful AI assistant. Answer clearly, structured, and concisely.",
+                "You are SmartLens Agent, a helpful AI assistant. Answer clearly, structured, and concisely. You must append a confidence score at the very end of your response exactly in this format: [CONFIDENCE: HIGH] or [CONFIDENCE: MEDIUM] or [CONFIDENCE: LOW].",
             },
-            {
-              role: "user",
-              content: question,
-            },
+            ...messages,
           ],
         }),
       }
@@ -40,13 +57,11 @@ export async function askAgent(question) {
         data?.error?.message || "Failed to get response"
       );
     }
+    
+    let rawContent = data?.choices?.[0]?.message?.content || "No response received. [CONFIDENCE: LOW]";
+    // Strip <think> tags from qwen output
+    rawContent = rawContent.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
 
-    return (
-      data?.choices?.[0]?.message?.content ||
-      "No response received."
-    );
-  } catch (error) {
-    console.log("AGENT ERROR:", error);
-    return `❌ ${error.message}`;
-  }
+    return rawContent;
+  });
 }

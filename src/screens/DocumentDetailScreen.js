@@ -1,5 +1,6 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect, useRef } from "react";
-import {
+import { 
   View,
   Text,
   ScrollView,
@@ -10,9 +11,8 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StatusBar,
-} from "react-native";
+ } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { chatWithDocument } from "../services/geminiService";

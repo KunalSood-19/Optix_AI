@@ -1,18 +1,18 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from "react";
-import {
+import { 
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Alert,
-} from "react-native";
+ } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { supabase } from "../services/supabaseClient";

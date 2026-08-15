@@ -1,14 +1,14 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState, useRef } from "react";
-import {
+import { 
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   StatusBar,
   ActivityIndicator,
   Alert
-} from "react-native";
+ } from 'react-native';
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 

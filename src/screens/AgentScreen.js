@@ -61,6 +61,7 @@ function TypewriterText({ text, speed = 15, style }) {
 }
 
 export default function AgentScreen() {
+  const route = useRoute();
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -68,11 +69,23 @@ export default function AgentScreen() {
   const [selectedImage, setSelectedImage] = useState(null);
   const scrollViewRef = useRef(null);
 
-  async function askQuestion() {
-    if (!question.trim() || loading) return;
+  useEffect(() => {
+    // Automatically submit if an initial query is passed from another screen
+    if (route?.params?.initialQuery) {
+      setQuestion(route.params.initialQuery);
+      setTimeout(() => {
+        askQuestion(route.params.initialQuery);
+      }, 500);
+    }
+  }, [route?.params]);
+
+  async function askQuestion(queryOverride = null) {
+    const q = typeof queryOverride === 'string' ? queryOverride : question;
+    if (!q.trim() || loading) return;
 
     Keyboard.dismiss();
-    const userQuestion = question;
+    const userQuestion = q;
+    if (typeof queryOverride !== 'string') setQuestion("");
 
     setMessages((prev) => [
       ...prev,
@@ -218,7 +231,7 @@ export default function AgentScreen() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Ask anything..."
+          placeholder="Ask Optix anything..."
           placeholderTextColor="#8D8FA5"
           multiline
           value={question}

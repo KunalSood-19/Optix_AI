@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+import { identifyObject, summarizeText } from "../services/geminiService";
+import { extractTextFromImage } from "../services/ocrService";
 
 // --- Custom Typewriter Animation Component ---
 function TypewriterText({ text, speed = 20, style }) {
@@ -58,29 +60,12 @@ function TypewriterText({ text, speed = 20, style }) {
 export default function QRScannerScreen({ route, navigation }) {
   // Read target operation parameters fallback seamlessly to default QR
   const mode = route?.params?.mode || "qr"; 
+  const cameraRef = useRef(null);
   
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [processingAI, setProcessingAI] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
-
-  if (!permission) {
-    return <View style={styles.container} />;
-  }
-
-  if (!permission.granted) {
-    return (
-      <View style={styles.center}>
-        <Ionicons name="camera-outline" size={80} color="#D97757" />
-        <Text style={styles.permissionText}>
-          Camera permission is required to analyze items or code layouts.
-        </Text>
-        <TouchableOpacity style={styles.permissionBtn} onPress={requestPermission}>
-          <Text style={styles.permissionBtnText}>Grant Permission</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   // Handle standard QR scans
   const handleQRScan = async (data) => {
@@ -106,25 +91,61 @@ export default function QRScannerScreen({ route, navigation }) {
     }
   };
 
-  // Mock processing function mimicking AI Pipeline workflows (Object Detection, Summaries)
-  const processAICameraCapture = () => {
-    if (scanned || processingAI) return;
+  useEffect(() => {
+    if (route?.params?.scannedData && !scanned) {
+      setScanned(true);
+      handleQRScan(route.params.scannedData);
+    }
+  }, [route?.params?.scannedData]);
+
+  if (!permission) {
+    return <View style={styles.container} />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.center}>
+        <Ionicons name="camera-outline" size={80} color="#D97757" />
+        <Text style={styles.permissionText}>
+          Camera permission is required to analyze items or code layouts.
+        </Text>
+        <TouchableOpacity style={styles.permissionBtn} onPress={requestPermission}>
+          <Text style={styles.permissionBtnText}>Grant Permission</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // Real processing function for AI Pipeline workflows (Object Detection, Summaries)
+  const processAICameraCapture = async () => {
+    if (scanned || processingAI || !cameraRef.current) return;
     
     setScanned(true);
     setProcessingAI(true);
     setAiResponse("");
 
-    // Simulate model request delays
-    setTimeout(() => {
-      setProcessingAI(false);
+    try {
+      const photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 0.3 });
+      
       if (mode === "objectDetection") {
-        setAiResponse("Object Spotted: Premium Workspace Desk Setup (Monitor, Keyboard, Plant detected).");
+        const response = await identifyObject(photo.base64);
+        setAiResponse(response);
       } else if (mode === "summary") {
-        setAiResponse("Summary Output: Key items located highlight technical documentation frameworks.");
+        const text = await extractTextFromImage(photo.uri);
+        if (text) {
+          const summary = await summarizeText(text);
+          setAiResponse(summary);
+        } else {
+          setAiResponse("Could not extract any text to summarize.");
+        }
       } else {
         setAiResponse(`Processed request matching mode payload parameters: ${mode}`);
       }
-    }, 1800);
+    } catch (error) {
+      setAiResponse("Failed to process image with AI.");
+    } finally {
+      setProcessingAI(false);
+    }
   };
 
   const handleBarcodeScannedEvent = ({ data }) => {
@@ -137,6 +158,7 @@ export default function QRScannerScreen({ route, navigation }) {
     <View style={styles.container}>
       {/* Configure structural capture targeting barcode scanning variants exclusively */}
       <CameraView
+        ref={cameraRef}
         style={StyleSheet.absoluteFillObject}
         barcodeScannerSettings={mode === "qr" ? { barcodeTypes: ["qr"] } : undefined}
         onBarcodeScanned={mode === "qr" && !scanned ? handleBarcodeScannedEvent : undefined}

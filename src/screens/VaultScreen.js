@@ -1,5 +1,6 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useCallback } from "react";
-import {
+import { 
   View,
   Text,
   FlatList,
@@ -8,8 +9,8 @@ import {
   Image,
   TextInput,
   Alert,
-  SafeAreaView,
-} from "react-native";
+  StatusBar
+   } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import {
@@ -21,10 +22,10 @@ import {
 const CATEGORIES = ["All", "Receipt", "General", "ID", "Certificate"];
 
 const CATEGORY_COLORS = {
-  Receipt: { text: "#FFB347", bg: "#FFB34733" },
-  General: { text: "#D97757", bg: "#D9775733" },
-  ID: { text: "#FF6584", bg: "#FF658433" },
-  Certificate: { text: "#43D9AD", bg: "#43D9AD33" },
+  Receipt: { text: "#FFB347", bg: "rgba(255, 179, 71, 0.2)" },
+  General: { text: "#D97757", bg: "rgba(217, 119, 87, 0.2)" },
+  ID: { text: "#FF6584", bg: "rgba(255, 101, 132, 0.2)" },
+  Certificate: { text: "#43D9AD", bg: "rgba(67, 217, 173, 0.2)" },
 };
 
 export default function VaultScreen({ navigation }) {
@@ -71,11 +72,12 @@ export default function VaultScreen({ navigation }) {
     category === "All" ? docs : docs.filter((d) => d.category === category);
 
   function getCategoryColors(cat) {
-    return CATEGORY_COLORS[cat] || { text: "#888", bg: "#88888833" };
+    return CATEGORY_COLORS[cat] || { text: "#888", bg: "rgba(255,255,255,0.1)" };
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
       <View style={styles.header}>
         <Text style={styles.title}>PDF Vault</Text>
         <Text style={styles.count}>{docs.length} documents</Text>
@@ -86,6 +88,7 @@ export default function VaultScreen({ navigation }) {
         <TextInput
           style={styles.searchInput}
           placeholder="Search documents..."
+          placeholderTextColor="#888"
           value={search}
           onChangeText={handleSearch}
         />
@@ -109,7 +112,7 @@ export default function VaultScreen({ navigation }) {
 
       {filtered.length === 0 ? (
         <View style={styles.empty}>
-          <Ionicons name="folder-open-outline" size={64} color="#ccc" />
+          <Ionicons name="folder-open-outline" size={64} color="rgba(255,255,255,0.2)" />
           <Text style={styles.emptyText}>No documents yet</Text>
           <Text style={styles.emptySubtext}>
             Scan something to save it here
@@ -161,28 +164,29 @@ export default function VaultScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F9FA" },
+  container: { flex: 1, backgroundColor: "#0A0A0A" },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     padding: 20,
+    backgroundColor: "transparent",
   },
-  title: { fontSize: 24, fontWeight: "bold", color: "#333" },
+  title: { fontSize: 24, fontWeight: "bold", color: "#FFF" },
   count: { fontSize: 14, color: "#888" },
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255,255,255,0.05)",
     margin: 16,
     marginTop: 0,
     paddingHorizontal: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: "rgba(255,255,255,0.1)",
   },
-  searchInput: { flex: 1, paddingVertical: 12, fontSize: 14 },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 15, color: "#FFF" },
   categories: {
     flexDirection: "row",
     paddingHorizontal: 16,
@@ -190,39 +194,40 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   catBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: "rgba(255,255,255,0.1)",
   },
-  activeCat: { backgroundColor: "#D97757", borderColor: "#D97757" },
-  catText: { fontSize: 13, color: "#888" },
+  activeCat: { backgroundColor: "#6C63FF", borderColor: "#6C63FF" },
+  catText: { fontSize: 13, color: "#888", fontWeight: "600" },
   activeCatText: { color: "#fff" },
   empty: { flex: 1, alignItems: "center", justifyContent: "center", gap: 8 },
-  emptyText: { fontSize: 18, color: "#ccc", fontWeight: "600" },
-  emptySubtext: { fontSize: 14, color: "#ddd" },
+  emptyText: { fontSize: 18, color: "#888", fontWeight: "600" },
+  emptySubtext: { fontSize: 14, color: "#555" },
   docCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderRadius: 16,
     marginBottom: 12,
     overflow: "hidden",
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
   },
-  thumb: { width: 70, height: 80, backgroundColor: "#eee" },
-  docInfo: { flex: 1, padding: 12, gap: 4 },
-  docTitle: { fontSize: 15, fontWeight: "600", color: "#333" },
+  thumb: { width: 70, height: 80, backgroundColor: "rgba(255,255,255,0.1)" },
+  docInfo: { flex: 1, padding: 16, gap: 6 },
+  docTitle: { fontSize: 16, fontWeight: "600", color: "#FFF" },
   docDate: { fontSize: 12, color: "#888" },
   catBadge: {
     alignSelf: "flex-start",
     paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
+    paddingVertical: 4,
+    borderRadius: 8,
     marginTop: 4,
   },
-  catBadgeText: { fontSize: 11, fontWeight: "600" },
+  catBadgeText: { fontSize: 11, fontWeight: "700" },
   deleteBtn: { padding: 16 },
 });

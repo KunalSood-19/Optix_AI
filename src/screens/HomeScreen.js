@@ -1,91 +1,64 @@
-import {
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { 
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   StatusBar,
-} from "react-native";
+ } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { Alert } from "react-native";
 import { supabase } from "../services/supabaseClient";
 import { useEffect, useState } from "react";
 import { Image } from "react-native";
+import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
 
-const features = [
+const vaults = [
   {
-    icon: "eye-outline",
-    label: "Object Identifier",
-    desc: "Identify objects instantly",
-    mode: "objectDetection",
-    color: "#673AB7",
-    bg: "#EDE7F6",
+    icon: "archive-outline",
+    label: "Math Vault",
+    desc: "Saved math problems",
+    screen: "Study",
+    nestedScreen: "MathHistory",
+    color: "#4FC3F7",
+    bg: "rgba(79, 195, 247, 0.15)",
   },
   {
-    icon: "qr-code-outline",
-    label: "QR Scanner",
-    desc: "Scan QR codes instantly",
-    screen: "QRScanner",
-    color: "#00C853",
-    bg: "#E8F5E9",
-  },
-  {
-    icon: "document-text-outline",
-    label: "OCR Engine",
-    desc: "Extract text from images",
-    mode: "ocr",
-    color: "#E91E8C",
-    bg: "#FCE4F0",
-  },
-  {
-    icon: "sparkles-outline",
-    label: "AI Summarizer",
-    desc: "Get key points instantly",
-    mode: "summary",
-    color: "#D97757",
-    bg: "#EEF0FF",
-  },
-  {
-    icon: "calculator-outline",
-    label: "Math Solver",
-    desc: "Step-by-step solutions",
-    mode: "math",
-    color: "#F44336",
-    bg: "#FFEBEE",
-  },
-  {
-    icon: "book-outline",
-    label: "Notes Generator",
-    desc: "Generate study notes",
-    mode: "notes",
-    color: "#009688",
-    bg: "#E0F2F1",
-  },
-  {
-    icon: "receipt-outline",
-    label: "Receipt Reader",
-    desc: "Extract amount & merchant",
-    mode: "receipt",
-    color: "#FF9800",
-    bg: "#FFF3E0",
-  },
-  {
-    icon: "card-outline",
-    label: "Business Card",
-    desc: "Save as contact directly",
-    mode: "businessCard",
-    color: "#2196F3",
-    bg: "#E3F2FD",
+    icon: "journal-outline",
+    label: "Notes Vault",
+    desc: "Saved handwritten notes",
+    screen: "Study",
+    nestedScreen: "HandwritingHistory",
+    color: "#81C784",
+    bg: "rgba(129, 199, 132, 0.15)",
   },
   {
     icon: "folder-outline",
     label: "PDF Vault",
-    desc: "Store all your documents",
+    desc: "Store all documents",
     screen: "Vault",
-    color: "#7C4DFF",
-    bg: "#EDE7F6",
+    color: "#BA68C8",
+    bg: "rgba(186, 104, 200, 0.15)",
   },
+  {
+    icon: "card-outline",
+    label: "Business Cards",
+    desc: "Saved business cards",
+    screen: "Vault",
+    color: "#FFB74D",
+    bg: "rgba(255, 183, 77, 0.15)",
+  },
+  {
+    icon: "time-outline",
+    label: "Search History",
+    desc: "All past searches",
+    screen: "Study",
+    nestedScreen: "StudyHistory",
+    color: "#FF8A65",
+    bg: "rgba(255, 138, 101, 0.15)",
+  }
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -124,19 +97,26 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <LinearGradient
+        colors={['#1c0c3a', '#080512', '#0e2b4d']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
         {/* Header */}
         <View style={styles.header}>
-          <View>
+          <TouchableOpacity onPress={() => navigation.navigate("Scanner")}>
             <Image
               source={require("../../assets/optix-logo-Photoro.png")}
               style={styles.headerLogo}
               resizeMode="contain"
             />
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.avatarCircle}
             onPress={handleProfilePress}
@@ -148,65 +128,78 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {/* Hero Banner */}
-        <View style={styles.heroBanner}>
+        <BlurView intensity={40} tint="dark" style={styles.heroBanner}>
           <View style={styles.heroTextBlock}>
             <Text style={styles.heroTitle}>Scan anything,{"\n"}understand instantly</Text>
+            <Text style={styles.heroSub}>Powered by Optix AI</Text>
           </View>
           <View style={styles.heroIconWrap}>
-            <Ionicons name="scan-outline" size={52} color="#D97757" opacity={0.15} />
+            <Ionicons name="scan-outline" size={52} color="#FFFFFF" opacity={0.25} />
           </View>
-        </View>
+        </BlurView>
 
         {/* Scan Button */}
         <TouchableOpacity
-          style={styles.scanBtn}
-          activeOpacity={0.85}
+          activeOpacity={0.8}
           onPress={() => navigation.navigate("Scanner")}
         >
-          <View style={styles.scanBtnInner}>
-            <View style={styles.scanBtnIcon}>
-              <Ionicons name="camera-outline" size={22} color="#D97757" />
+          <BlurView intensity={40} tint="dark" style={styles.scanBtn}>
+            <View style={styles.scanBtnInner}>
+              <View style={styles.scanBtnIcon}>
+                <Ionicons name="camera" size={20} color="#1A1A2E" />
+              </View>
+              <Text style={styles.scanBtnText}>Open Scanner</Text>
             </View>
-            <Text style={styles.scanBtnText}>Scan Now</Text>
-          </View>
-          <Ionicons name="arrow-forward-outline" size={20} color="#D97757" />
+            <Ionicons name="arrow-forward" size={20} color="#FFFFFF" opacity={0.5} />
+          </BlurView>
         </TouchableOpacity>
 
-        {/* Features */}
-        <Text style={styles.sectionTitle}>Features</Text>
+        <Text style={styles.sectionTitle}>Vaults & History</Text>
         <View style={styles.grid}>
-          {features.map((f, i) => (
+          {vaults.map((f, i) => (
             <TouchableOpacity
               key={i}
-              style={styles.card}
+              style={styles.cardContainer}
               activeOpacity={0.75}
               onPress={() => {
-                if (f.screen) {
+                if (f.label === "Business Card Vault") {
+                  Alert.alert("Coming Soon", "Business Card Vault is coming in a future update!");
+                  return;
+                }
+                if (f.nestedScreen) {
+                  navigation.navigate(f.screen, { screen: f.nestedScreen });
+                } else if (f.screen) {
                   navigation.navigate(f.screen);
                 } else {
                   navigation.navigate("Scanner", { mode: f.mode });
                 }
               }}
             >
-              <View style={[styles.iconBox, { backgroundColor: f.bg }]}>
-                <Ionicons name={f.icon} size={22} color={f.color} />
-              </View>
-              <Text style={styles.cardTitle}>{f.label}</Text>
-              <Text style={styles.cardDesc}>{f.desc}</Text>
+              <BlurView intensity={40} tint="dark" style={styles.card}>
+                <View style={[styles.iconBox, { backgroundColor: f.bg }]}>
+                  <Ionicons name={f.icon} size={22} color={f.color} />
+                </View>
+                <Text style={styles.cardTitle}>{f.label}</Text>
+                <Text style={styles.cardDesc}>{f.desc}</Text>
+              </BlurView>
             </TouchableOpacity>
           ))}
         </View>
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F5F9",
+    backgroundColor: "#FFFFFF",
+  },
+  safeArea: {
+    flex: 1,
   },
   scrollContent: {
     paddingBottom: 24,
@@ -218,9 +211,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 27,
-    paddingTop: 28,
+    paddingTop: 48, // Added padding for translucent status bar
     paddingBottom: 16,
-    backgroundColor: "#ffffff",
+    backgroundColor: "transparent",
   },
   headerLogo: {
     width: 200,
@@ -252,22 +245,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
     marginHorizontal: 16,
     marginTop: 14,
-    borderRadius: 18,
-    padding: 20,
+    borderRadius: 24,
+    padding: 24,
     borderWidth: 1,
-    borderColor: "#EBEBEB",
+    borderColor: "rgba(255, 255, 255, 0.15)",
+    overflow: "hidden",
   },
   heroTextBlock: {
     flex: 1,
   },
   heroTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "700",
-    color: "#1A1A2E",
-    lineHeight: 26,
+    color: "#FFFFFF",
+    lineHeight: 28,
     letterSpacing: -0.2,
   },
   heroSub: {
@@ -285,13 +278,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#EEF0FF",
     marginHorizontal: 16,
     marginTop: 12,
-    padding: 14,
-    borderRadius: 14,
+    padding: 16,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#D8D6FF",
+    borderColor: "rgba(255, 255, 255, 0.15)",
+    overflow: "hidden",
   },
   scanBtnInner: {
     flexDirection: "row",
@@ -299,27 +292,27 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   scanBtnIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
+    width: 38,
+    height: 38,
+    borderRadius: 12,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
   },
   scanBtnText: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "600",
-    color: "#D97757",
+    color: "#FFFFFF",
   },
 
   /* Section */
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#1A1A2E",
+    color: "#FFFFFF",
     paddingHorizontal: 20,
-    marginTop: 22,
-    marginBottom: 12,
+    marginTop: 26,
+    marginBottom: 14,
     letterSpacing: -0.1,
   },
 
@@ -330,31 +323,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     gap: 10,
   },
-  card: {
-    width: "46.5%",
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    padding: 16,
+  cardContainer: {
+    width: "47%",
+    borderRadius: 22,
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
+    borderColor: "rgba(255, 255, 255, 0.1)",
+  },
+  card: {
+    padding: 18,
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.1)", // Extra darkness for Android where blur fails
   },
   iconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 12,
+    marginBottom: 16,
   },
   cardTitle: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "700",
-    color: "#1A1A2E",
+    color: "#FFFFFF",
     marginBottom: 4,
   },
   cardDesc: {
-    fontSize: 11,
-    color: "#9E9E9E",
+    fontSize: 12,
+    color: "rgba(255, 255, 255, 0.6)",
     lineHeight: 16,
   },
 

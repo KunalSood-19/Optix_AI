@@ -7,13 +7,11 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -22,29 +20,12 @@
       "package": "com.kunalsood19.optix",
       "versionCode": 2
     },
-
     "ios": {
       "buildNumber": "2"
     },
-
     "plugins": [
       "expo-font"
     ],
-
-    "extra": {
-      "eas": {
-        "projectId": "0ef14e16-d287-4bd7-904c-7feea130b3d8"
-      }
-    },
-
-    "owner": "kunalsood19",
-
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-
-    "updates": {
-      "url": "https://u.expo.dev/0ef14e16-d287-4bd7-904c-7feea130b3d8"
-    }
+    "owner": "kunalsood19"
   }
 }
