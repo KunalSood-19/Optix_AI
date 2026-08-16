@@ -141,7 +141,7 @@ export default function App() {
   const [session, setSession] = useState(null);
   const [checking, setChecking] = useState(true);
 
-  let [fontsLoaded] = useFonts({
+  let [fontsLoaded, fontError] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
@@ -153,6 +153,11 @@ export default function App() {
       .getSession()
       .then(({ data: { session } }) => {
         setSession(session);
+        setChecking(false);
+      })
+      .catch((error) => {
+        console.warn("Supabase auth check failed. Falling back to Login:", error);
+        setSession(null);
         setChecking(false);
       });
 
@@ -185,7 +190,9 @@ export default function App() {
     );
   }
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
+    // Show nothing (or a splash screen) only while actively waiting for fonts,
+    // but if fontError exists, proceed rendering to avoid a permanent black screen.
     return null;
   }
 
