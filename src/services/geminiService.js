@@ -28,7 +28,7 @@ async function withRetry(fn, retries = 3, delayMs = 3000) {
 async function askAI(prompt, isJsonMode = false) {
   return withRetry(async () => {
     const bodyPayload = {
-      model: "llama-3.3-70b-versatile", 
+      model: "qwen/qwen3.6-27b", 
       messages: [
         {
           role: "system",
@@ -547,8 +547,9 @@ Steps Taken: ${JSON.stringify(steps)}
 Deterministic Final Answer: ${deterministicAnswer || "Not deterministically soluble"}
 
 Please provide a clear, step-by-step human-readable explanation of how to arrive at this answer.
-If the deterministic answer is null, solve it step-by-step yourself.
-Use simple, encouraging language.`);
+Keep the explanation very concise and brief (maximum 2 short paragraphs). 
+Avoid overly long pleasantries. Use simple, encouraging language.
+If the deterministic answer is null, solve it step-by-step yourself concisely.`);
   return result;
 }
 

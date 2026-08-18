@@ -276,7 +276,14 @@ const markdownStyles = {
   strong: {
     fontWeight: "bold",
     color: "#FFFFFF",
-    backgroundColor: "rgba(108, 99, 255, 0.35)",
+  },
+  code_inline: {
+    backgroundColor: "transparent",
+    color: "#FFCC00",
+  },
+  code_block: {
+    backgroundColor: "transparent",
+    color: "#FFCC00",
   },
   em: {
     fontStyle: "italic",

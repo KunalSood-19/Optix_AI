@@ -60,8 +60,7 @@ function TypewriterText({ text, speed = 15, style }) {
   return <Text style={style}>{displayedText}</Text>;
 }
 
-export default function AgentScreen() {
-  const route = useRoute();
+export default function AgentScreen({ route, navigation }) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);

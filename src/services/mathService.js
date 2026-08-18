@@ -7,7 +7,11 @@ require('nerdamer/Solve');
 
 export function solveMathDeterministically(expression) {
   try {
-    const cleanExpr = expression.replace(/\s+/g, "").toLowerCase();
+    let cleanExpr = expression.replace(/\s+/g, "").toLowerCase();
+    
+    // Remove trailing '=' or '=?' which often denote a question rather than an algebraic equation
+    cleanExpr = cleanExpr.replace(/=\??$/, "");
+
     const steps = [];
     let finalAnswer = "";
 
@@ -36,8 +40,9 @@ export function solveMathDeterministically(expression) {
     }
 
     // 3. Basic Arithmetic, Fractions, Trigonometry, Statistics
-    steps.push(`Evaluating mathematical expression: ${expression}`);
-    let evalExpr = expression
+    steps.push(`Evaluating mathematical expression: ${cleanExpr}`);
+    let evalExpr = cleanExpr
+      .replace(/(\d+)\/(\d+)/g, "($1/$2)")
       .replace(/×/g, "*")
       .replace(/÷/g, "/")
       .replace(/π/g, "pi")
