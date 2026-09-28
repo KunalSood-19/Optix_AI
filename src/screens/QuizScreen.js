@@ -96,7 +96,7 @@ export default function QuizScreen({ route, navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#E91E8C" />
+        <ActivityIndicator size="large" color="#4C4C4C" />
         <Text style={styles.loadingText}>Generating adaptive quiz...</Text>
       </View>
     );
@@ -109,7 +109,7 @@ export default function QuizScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="close" size={24} color="#1A1A2E" />
+          <Ionicons name="close" size={24} color="#F4F4F4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Quiz</Text>
         <Text style={styles.progressText}>{currentIndex + 1} / {questions.length}</Text>
@@ -163,31 +163,33 @@ export default function QuizScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
+  container: { flex: 1, backgroundColor: "#050505" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  loadingText: { marginTop: 12, color: "#9E9E9E", fontSize: 16 },
-  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "#FFF" },
-  backBtn: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E", flex: 1 },
-  progressText: { fontSize: 14, color: "#9E9E9E", fontWeight: "600" },
-  progressBar: { height: 4, backgroundColor: "#EBEBEB", width: "100%" },
-  progressFill: { height: "100%", backgroundColor: "#E91E8C" },
+  loadingText: { marginTop: 12, color: "#A3A3A3", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
+  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "transparent" },
+  backBtn: { marginRight: 15, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", flex: 1 },
+  progressText: { fontSize: 14, color: "#A3A3A3", fontFamily: 'Rajdhani_600SemiBold' },
+  progressBar: { height: 4, backgroundColor: "rgba(255,255,255,0.4)", width: "100%" },
+  progressFill: { height: "100%", backgroundColor: "#4C4C4C" },
   content: { padding: 20 },
-  questionText: { fontSize: 20, fontWeight: "600", color: "#1A1A2E", lineHeight: 30, marginBottom: 30 },
+  questionText: { fontSize: 20, fontFamily: 'Rajdhani_600SemiBold', color: "#F4F4F4", lineHeight: 30, marginBottom: 30 },
   optionsContainer: { gap: 12 },
-  optionBtn: { flexDirection: "row", alignItems: "center", padding: 16, backgroundColor: "#FFF", borderRadius: 12, borderWidth: 2, borderColor: "#EBEBEB" },
-  selectedOption: { borderColor: "#E91E8C", backgroundColor: "#FCE4F0" },
-  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "#CCC", marginRight: 15, justifyContent: "center", alignItems: "center" },
-  radioSelected: { borderColor: "#E91E8C" },
-  radioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#E91E8C" },
-  optionText: { fontSize: 16, color: "#333", flex: 1 },
-  selectedOptionText: { color: "#E91E8C", fontWeight: "600" },
-  footer: { flexDirection: "row", padding: 20, backgroundColor: "#FFF", borderTopWidth: 1, borderColor: "#EBEBEB", justifyContent: "space-between" },
-  navBtn: { paddingVertical: 14, paddingHorizontal: 24, borderRadius: 12, backgroundColor: "#F4F5F9" },
+  optionBtn: { flexDirection: "row", alignItems: "center", padding: 16, backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 12, borderWidth: 2, borderColor: "rgba(255,255,255,0.4)" },
+  selectedOption: { borderColor: "#4C4C4C", backgroundColor: "rgba(77, 77, 77, 0.2)" },
+  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "rgba(255,255,255,0.5)", marginRight: 15, justifyContent: "center", alignItems: "center" },
+  radioSelected: { borderColor: "#4C4C4C" },
+  radioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#4C4C4C" },
+  optionText: { fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", flex: 1 },
+  selectedOptionText: { color: "#F4F4F4", fontFamily: 'Rajdhani_600SemiBold' },
+  footer: { flexDirection: "row", padding: 20, backgroundColor: "transparent", borderTopWidth: 1, borderColor: "rgba(255,255,255,0.4)", justifyContent: "space-between" },
+  navBtn: { paddingVertical: 14, paddingHorizontal: 24, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.12)" },
   disabledBtn: { opacity: 0.5 },
-  navBtnText: { color: "#1A1A2E", fontWeight: "600", fontSize: 16 },
-  nextBtn: { backgroundColor: "#1A1A2E" },
-  nextBtnText: { color: "#FFF", fontWeight: "600", fontSize: 16 },
-  submitBtn: { backgroundColor: "#E91E8C" },
-  submitBtnText: { color: "#FFF", fontWeight: "700", fontSize: 16 },
+  navBtnText: { color: "#F4F4F4", fontFamily: 'Rajdhani_600SemiBold', fontSize: 16 },
+  nextBtn: { backgroundColor: "rgba(255,255,255,0.5)" },
+  nextBtnText: { color: "#FFF", fontFamily: 'Rajdhani_600SemiBold', fontSize: 16 },
+  submitBtn: { backgroundColor: "#4C4C4C" },
+  submitBtnText: { color: "#FFF", fontFamily: 'Rajdhani_700Bold', fontSize: 16 },
 });

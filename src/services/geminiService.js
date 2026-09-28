@@ -4,8 +4,39 @@
 
 const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_AUDIO_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 
 console.log("Groq API Key exists:", !!GROQ_API_KEY);
+
+export async function transcribeAudio(audioUri) {
+  try {
+    const formData = new FormData();
+    formData.append("file", {
+      uri: audioUri,
+      name: "recording.m4a",
+      type: "audio/m4a",
+    });
+    formData.append("model", "whisper-large-v3-turbo");
+
+    const response = await fetch(GROQ_AUDIO_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${GROQ_API_KEY}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.error?.message || "Transcription failed");
+    }
+
+    return data.text;
+  } catch (error) {
+    console.log("Transcription Error:", error);
+    return null;
+  }
+}
 
 /**
  * Exponential backoff retry wrapper
@@ -28,7 +59,7 @@ async function withRetry(fn, retries = 3, delayMs = 3000) {
 async function askAI(prompt, isJsonMode = false) {
   return withRetry(async () => {
     const bodyPayload = {
-      model: "qwen/qwen3.6-27b", 
+      model: "qwen/qwen3.8-27b", 
       messages: [
         {
           role: "system",
@@ -63,7 +94,9 @@ async function askAI(prompt, isJsonMode = false) {
       throw new Error(data?.error?.message || "AI request failed");
     }
 
-    return data?.choices?.[0]?.message?.content || "No response generated. [CONFIDENCE: LOW]";
+    let resultText = data?.choices?.[0]?.message?.content || "No response generated. [CONFIDENCE: LOW]";
+    resultText = resultText.replace(/<think>[\s\S]*?<\/think>\n*/g, '').trim();
+    return resultText;
   });
 }
 
@@ -97,6 +130,22 @@ ${text}
 }
 
 // ========================
+// EXTRACT SEARCH QUERY
+// ========================
+export async function extractSearchQuery(text) {
+  let result = await askAI(`
+Analyze the following text and extract the single most important topic, keyword, or entity.
+Return ONLY the search query (max 3 words). Do NOT return any markdown, prefixes, or quotes.
+
+Text:
+${text}
+`);
+  // Clean up any stray confidence tags just in case
+  result = result.replace(/\[CONFIDENCE:\s*(HIGH|MEDIUM|LOW)\]/gi, "").trim();
+  return result || text.substring(0, 50);
+}
+
+// ========================
 // CHAT WITH DOCUMENT
 // ========================
 export async function chatWithDocument(text, question) {
@@ -110,6 +159,76 @@ ${question}
 Answer only using information available in the document.
 `);
 }
+
+// ========================
+// GENERAL CHAT
+// ========================
+export async function generalChat(question) {
+  return await askAI(`
+You are Optix, an intelligent voice assistant for students and professionals.
+Please answer the following question concisely and helpfully.
+
+Question:
+${question}
+`);
+}
+
+// ========================
+// MULTIMODAL CHAT
+// ========================
+export async function askWithImage(question, base64Image) {
+  return withRetry(async () => {
+    if (!base64Image) {
+      return await generalChat(question); // Fallback to text if no image
+    }
+
+    const cleanBase64 = base64Image.startsWith("data:") 
+      ? base64Image 
+      : `data:image/jpeg;base64,${base64Image}`;
+
+    const response = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "qwen/qwen3.8-27b",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `You are Optix, an intelligent assistant. 
+Please answer the user's question based on the provided image.
+Keep it concise and helpful.
+
+Question: ${question}`
+              },
+              {
+                type: "image_url",
+                image_url: { url: cleanBase64 }
+              }
+            ]
+          }
+        ],
+        temperature: 0.2,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.error?.message || "Multimodal request failed");
+    }
+    
+    let content = data?.choices?.[0]?.message?.content || "Sorry, I couldn't understand that image.";
+    content = content.replace(/<think>[\s\S]*?<\/think>\n*/g, '').trim();
+    return content;
+  });
+}
+
 
 // ========================
 // NOTES GENERATOR
@@ -255,6 +374,8 @@ You are SmartLens Math Solver.
 
 Correct OCR mistakes first.
 
+IMPORTANT: For math equations, DO NOT use LaTeX formatting like $...$ or \\frac. Use plain text with basic symbols (e.g., x^2, a/b, sum) so it renders beautifully as regular text.
+
 Return EXACTLY in this format:
 
 QUESTION:
@@ -271,6 +392,64 @@ FINAL ANSWER:
 OCR TEXT:
 ${text}
 `);
+}
+
+// ========================
+// CIRCLE TO SEARCH (UNIVERSAL LENS)
+// ========================
+export async function performCircleToSearch(base64Image) {
+  return withRetry(async () => {
+    if (!base64Image) {
+      throw new Error("No image data provided for Circle to Search");
+    }
+
+    const cleanBase64 = base64Image.startsWith("data:") 
+      ? base64Image 
+      : `data:image/jpeg;base64,${base64Image}`;
+
+    const response = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "qwen/qwen3.8-27b",
+        messages: [
+          {
+            role: "system",
+            content: "You are SmartLens, an incredibly intelligent Google Lens alternative. Your job is to analyze the image (often a cropped circular region) and intuitively figure out what the user wants. If it contains a question, answer the question step-by-step. If it contains a QR code or barcode, extract the URL/data. If it contains foreign text, translate it. If it contains a product or landmark, identify it and give details. Return ONLY a valid JSON object."
+          },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `Analyze this image region. Return ONLY a strictly valid JSON object matching this schema:
+{
+  "title": "A short, catchy title of what this is (e.g. 'Math Problem Solved', 'QR Code Detected', 'MacBook Pro 16')",
+  "extractedText": "Any text, question, or QR data found in the image exactly as written. Leave empty if none.",
+  "answer": "The main intelligence. If it's a question, provide the detailed answer and explanation. If it's an object, provide a rich description. If it's a QR code, explain what the URL/data is. Use markdown formatting. IMPORTANT: For math equations, DO NOT use LaTeX formatting like $...$ or \\frac. Use plain text with basic symbols (e.g., x^2, a/b, sum) so it renders beautifully as regular text.",
+  "type": "question|barcode|object|text|math"
+}`
+              },
+              {
+                type: "image_url",
+                image_url: { url: cleanBase64 }
+              }
+            ]
+          }
+        ],
+        temperature: 0.1
+      })
+    });
+    
+    const jsonResponse = await response.json();
+    if (!response.ok) throw new Error(jsonResponse.error?.message || "Circle to Search failed");
+
+    const content = jsonResponse.choices?.[0]?.message?.content;
+    return parseAndValidateJSON(content, "answer");
+  });
 }
 
 // ========================
@@ -293,7 +472,7 @@ export async function identifyObject(base64Image) {
         Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "qwen/qwen3.6-27b",
+        model: "qwen/qwen3.8-27b",
         messages: [
           {
             role: "user",
@@ -503,7 +682,7 @@ export async function parseMathImage(base64Image) {
         Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "qwen/qwen3.6-27b",
+        model: "qwen/qwen3.8-27b",
         messages: [
           {
             role: "user",
@@ -590,7 +769,7 @@ Do not use markdown backticks around the JSON.`
         Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "qwen/qwen3.6-27b",
+        model: "qwen/qwen3.8-27b",
         messages: [{ role: "user", content: contentArray }],
         temperature: 0.1
       })

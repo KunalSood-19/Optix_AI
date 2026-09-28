@@ -10,7 +10,7 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   summarizeText, chatWithDocument, extractReceiptData,
-  extractBusinessCardData, solveMath, generateNotes, identifyObject, translateText
+  extractBusinessCardData, solveMath, generateNotes, identifyObject, translateText, performCircleToSearch
 } from "../services/geminiService";
 import { saveDocument } from "../services/storageService";
 import * as Clipboard from "expo-clipboard";
@@ -59,6 +59,31 @@ const markdownStyles = {
   list_item: {
     marginBottom: 5,
     lineHeight: 28, textAlign: 'justify',
+  },
+  code_inline: {
+    backgroundColor: "rgba(108, 99, 255, 0.2)",
+    color: "#C4B5FD",
+    fontFamily: 'Inter_400Regular',
+    paddingHorizontal: 5,
+    borderRadius: 4,
+  },
+  code_block: {
+    backgroundColor: "rgba(10, 10, 25, 0.8)",
+    color: "#E2E8F0",
+    fontFamily: 'Inter_400Regular',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  fence: {
+    backgroundColor: "rgba(10, 10, 25, 0.8)",
+    color: "#E2E8F0",
+    fontFamily: 'Inter_400Regular',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 5,
+    marginBottom: 10,
   }
 };
 
@@ -114,7 +139,8 @@ function TypewriterText({ text, speed = 15, style, isMarkdown = false }) {
 }
 
 export default function ResultScreen({ route, navigation }) {
-  const { imageUri, base64, extractedText, mode } = route.params;
+  const { imageUri, base64, mode } = route.params;
+  const [extractedText, setExtractedText] = useState(route.params.extractedText || "");
   const [aiSummary, setAiSummary] = useState("");
   const [loading, setLoading] = useState(true);
   const [chatInput, setChatInput] = useState("");
@@ -133,7 +159,7 @@ export default function ResultScreen({ route, navigation }) {
   const tabs =
     mode === "math" ? ["summary", "text", "chat"]
     : mode === "notes" ? ["summary", "text"]
-    : mode === "objectDetection" ? ["summary", "chat"]
+    : (mode === "objectDetection" || mode === "circleToSearch") ? ["summary", "chat", "text"]
     : receiptData ? ["summary", "text", "chat", "receipt"]
     : ["summary", "text", "chat"];
 
@@ -176,6 +202,16 @@ export default function ResultScreen({ route, navigation }) {
         rawText = await solveMath(cleaned);
       } else if (mode === "notes") {
         rawText = await generateNotes(extractedText);
+      } else if (mode === "circleToSearch") {
+        const objData = await performCircleToSearch(base64 || imageUri);
+        if (objData && objData.title) {
+          rawText = `# ${objData.title}\n\n${objData.answer}`;
+          if (objData.extractedText && objData.extractedText.trim().length > 0) {
+            setExtractedText(objData.extractedText);
+          }
+        } else {
+          rawText = "Could not identify the contents of the circled area.";
+        }
       } else if (mode === "objectDetection") {
         const objData = await identifyObject(base64);
         setObjectData(objData);

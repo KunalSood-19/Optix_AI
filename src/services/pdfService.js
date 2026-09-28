@@ -24,7 +24,7 @@ export async function generateAndSharePDF(
             background-color: #FAFAFB;
           }
           .header {
-            border-bottom: 3px solid #D97757;
+            border-bottom: 3px solid #A3A3A3;
             padding-bottom: 12px;
             margin-bottom: 24px;
           }

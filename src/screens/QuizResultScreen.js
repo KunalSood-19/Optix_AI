@@ -13,7 +13,7 @@ export default function QuizResultScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate("StudyDashboard")}>
-          <Ionicons name="close" size={24} color="#1A1A2E" />
+          <Ionicons name="close" size={24} color="#F4F4F4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Results</Text>
       </View>
@@ -21,7 +21,7 @@ export default function QuizResultScreen({ route, navigation }) {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.scoreCard}>
           <Text style={styles.scoreLabel}>Accuracy</Text>
-          <Text style={[styles.percentage, { color: percentage >= 80 ? '#4CAF50' : percentage >= 50 ? '#FF9800' : '#F44336' }]}>
+          <Text style={[styles.percentage, { color: percentage >= 80 ? '#A3A3A3' : percentage >= 50 ? '#A3A3A3' : '#A3A3A3' }]}>
             {percentage}%
           </Text>
           <View style={styles.statsRow}>
@@ -67,7 +67,7 @@ export default function QuizResultScreen({ route, navigation }) {
                     context: extractedText
                   })}
                 >
-                  <Ionicons name="chatbubbles-outline" size={16} color="#009688" />
+                  <Ionicons name="chatbubbles-outline" size={16} color="#4C4C4C" />
                   <Text style={styles.askBtnText}>Explain differently in Chat</Text>
                 </TouchableOpacity>
               </View>
@@ -95,36 +95,38 @@ export default function QuizResultScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
-  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "#FFF", borderBottomWidth: 1, borderColor: "#EBEBEB" },
-  backBtn: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E" },
+  container: { flex: 1, backgroundColor: "#050505" },
+  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "transparent", borderBottomWidth: 1, borderColor: "rgba(255,255,255,0.4)" },
+  backBtn: { marginRight: 15, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4" },
   content: { padding: 20, paddingBottom: 40 },
-  scoreCard: { backgroundColor: "#FFF", borderRadius: 20, padding: 30, alignItems: "center", borderWidth: 1, borderColor: "#EBEBEB", marginBottom: 20 },
-  scoreLabel: { fontSize: 16, color: "#9E9E9E", fontWeight: "600", textTransform: "uppercase", letterSpacing: 1 },
-  percentage: { fontSize: 64, fontWeight: "bold", marginVertical: 10 },
-  statsRow: { flexDirection: "row", width: "100%", justifyContent: "center", gap: 30, marginTop: 10, borderTopWidth: 1, borderColor: "#F4F5F9", paddingTop: 20 },
+  scoreCard: { backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 20, padding: 30, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", marginBottom: 20 },
+  scoreLabel: { fontSize: 16, color: "#A3A3A3", fontFamily: 'Rajdhani_600SemiBold', textTransform: "uppercase", letterSpacing: 1 },
+  percentage: { fontSize: 64, fontFamily: 'Rajdhani_700Bold', marginVertical: 10 },
+  statsRow: { flexDirection: "row", width: "100%", justifyContent: "center", gap: 30, marginTop: 10, borderTopWidth: 1, borderColor: "rgba(255,255,255,0.4)", paddingTop: 20 },
   statBox: { alignItems: "center" },
-  statNum: { fontSize: 24, fontWeight: "700", color: "#1A1A2E" },
-  statDesc: { fontSize: 12, color: "#9E9E9E", marginTop: 4 },
-  reviewBtn: { flexDirection: "row", backgroundColor: "#F44336", padding: 16, borderRadius: 12, alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 20 },
-  reviewBtnText: { color: "#FFF", fontSize: 16, fontWeight: "700" },
+  statNum: { fontSize: 24, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4" },
+  statDesc: { fontSize: 12,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3", marginTop: 4 },
+  reviewBtn: { flexDirection: "row", backgroundColor: "rgba(255, 0, 127, 0.2)", borderWidth: 1, borderColor: "#A3A3A3", padding: 16, borderRadius: 12, alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 20 },
+  reviewBtnText: { color: "#A3A3A3", fontSize: 16, fontFamily: 'Rajdhani_700Bold' },
   reviewSection: { marginTop: 10, marginBottom: 20 },
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E", marginBottom: 15 },
-  reviewCard: { backgroundColor: "#FFF", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#EBEBEB", marginBottom: 15 },
-  qText: { fontSize: 16, fontWeight: "600", color: "#1A1A2E", marginBottom: 15 },
-  ansBox: { backgroundColor: "#F4F5F9", padding: 12, borderRadius: 8, gap: 8, marginBottom: 15 },
-  wrongAns: { color: "#F44336", fontWeight: "500" },
-  correctAns: { color: "#4CAF50", fontWeight: "500" },
-  explanationBox: { paddingLeft: 12, borderLeftWidth: 3, borderColor: "#EBEBEB" },
-  expTitle: { fontSize: 12, fontWeight: "700", color: "#9E9E9E", marginBottom: 4, textTransform: "uppercase" },
-  expText: { color: "#666", lineHeight: 22 },
+  sectionTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", marginBottom: 15 },
+  reviewCard: { backgroundColor: "rgba(255,255,255,0.12)", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.5)", marginBottom: 15 },
+  qText: { fontSize: 16, fontFamily: 'Rajdhani_600SemiBold', color: "#F4F4F4", marginBottom: 15 },
+  ansBox: { backgroundColor: "rgba(0,0,0,0.3)", padding: 12, borderRadius: 8, gap: 8, marginBottom: 15 },
+  wrongAns: { color: "#A3A3A3", fontFamily: 'Rajdhani_500Medium' },
+  correctAns: { color: "#A3A3A3", fontFamily: 'Rajdhani_500Medium' },
+  explanationBox: { paddingLeft: 12, borderLeftWidth: 3, borderColor: "rgba(255,255,255,0.2)" },
+  expTitle: { fontSize: 12, fontFamily: 'Rajdhani_700Bold', color: "#A3A3A3", marginBottom: 4, textTransform: "uppercase" },
+  expText: { color: "#E2E8F0",
+    fontFamily: 'Rajdhani_500Medium', lineHeight: 22 },
   askBtn: { flexDirection: "row", alignItems: "center", marginTop: 15, gap: 5 },
-  askBtnText: { color: "#009688", fontWeight: "600" },
+  askBtnText: { color: "#4C4C4C", fontFamily: 'Rajdhani_600SemiBold' },
   actions: { gap: 12, marginTop: 20 },
   actionBtn: { padding: 16, borderRadius: 12, alignItems: "center" },
-  primaryBtn: { backgroundColor: "#E91E8C" },
-  primaryBtnText: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  secondaryBtn: { backgroundColor: "#FFF", borderWidth: 1, borderColor: "#EBEBEB" },
-  secondaryBtnText: { color: "#1A1A2E", fontSize: 16, fontWeight: "600" },
+  primaryBtn: { backgroundColor: "#4C4C4C" },
+  primaryBtnText: { color: "#FFF", fontSize: 16, fontFamily: 'Rajdhani_700Bold' },
+  secondaryBtn: { backgroundColor: "rgba(255,255,255,0.12)", borderWidth: 1, borderColor: "rgba(255,255,255,0.4)" },
+  secondaryBtnText: { color: "#F4F4F4", fontSize: 16, fontFamily: 'Rajdhani_600SemiBold' },
 });

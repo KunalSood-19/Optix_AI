@@ -82,7 +82,7 @@ export default function FlashcardScreen({ route, navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#FF9800" />
+        <ActivityIndicator size="large" color="#A3A3A3" />
         <Text style={styles.loadingText}>Generating flashcards...</Text>
       </View>
     );
@@ -102,15 +102,15 @@ export default function FlashcardScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1A1A2E" />
+          <Ionicons name="arrow-back" size={24} color="#F4F4F4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Flashcards</Text>
         <Text style={styles.progressText}>{currentIndex + 1} / {flashcards.length}</Text>
       </View>
 
       <View style={styles.statsBar}>
-        <View style={styles.statPill}><View style={[styles.dot, {backgroundColor: '#4CAF50'}]}/><Text>Known: {stats.known}</Text></View>
-        <View style={styles.statPill}><View style={[styles.dot, {backgroundColor: '#F44336'}]}/><Text>Review: {stats.review}</Text></View>
+        <View style={styles.statPill}><View style={[styles.dot, {backgroundColor: '#A3A3A3'}]}/><Text style={styles.statText}>Known: {stats.known}</Text></View>
+        <View style={styles.statPill}><View style={[styles.dot, {backgroundColor: '#A3A3A3'}]}/><Text style={styles.statText}>Review: {stats.review}</Text></View>
       </View>
 
       <View style={styles.content}>
@@ -128,21 +128,21 @@ export default function FlashcardScreen({ route, navigation }) {
 
         <View style={styles.controls}>
           <TouchableOpacity style={styles.navBtn} onPress={prevCard}>
-            <Ionicons name="chevron-back" size={24} color="#1A1A2E" />
+            <Ionicons name="chevron-back" size={24} color="#F4F4F4" />
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#F44336'}]} onPress={() => handleMark('review')}>
-            <Ionicons name="close" size={24} color="#FFF" />
-            <Text style={styles.actionBtnText}>Review</Text>
+          <TouchableOpacity style={[styles.actionBtn, {backgroundColor: 'rgba(255, 0, 127, 0.2)', borderWidth: 1, borderColor: '#A3A3A3'}]} onPress={() => handleMark('review')}>
+            <Ionicons name="close" size={24} color="#A3A3A3" />
+            <Text style={[styles.actionBtnText, {color: '#A3A3A3'}]}>Review</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#4CAF50'}]} onPress={() => handleMark('known')}>
-            <Ionicons name="checkmark" size={24} color="#FFF" />
-            <Text style={styles.actionBtnText}>Known</Text>
+          <TouchableOpacity style={[styles.actionBtn, {backgroundColor: 'rgba(163, 163, 163, 0.2)', borderWidth: 1, borderColor: '#A3A3A3'}]} onPress={() => handleMark('known')}>
+            <Ionicons name="checkmark" size={24} color="#A3A3A3" />
+            <Text style={[styles.actionBtnText, {color: '#A3A3A3'}]}>Known</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.navBtn} onPress={nextCard}>
-            <Ionicons name="chevron-forward" size={24} color="#1A1A2E" />
+            <Ionicons name="chevron-forward" size={24} color="#F4F4F4" />
           </TouchableOpacity>
         </View>
       </View>
@@ -151,23 +151,32 @@ export default function FlashcardScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
+  container: { flex: 1, backgroundColor: "#050505" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  loadingText: { marginTop: 12, color: "#9E9E9E", fontSize: 16 },
-  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "#FFF", borderBottomWidth: 1, borderColor: "#EBEBEB" },
-  backBtn: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E", flex: 1 },
-  progressText: { fontSize: 14, color: "#9E9E9E", fontWeight: "600" },
+  loadingText: { marginTop: 12, color: "#A3A3A3", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
+  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "transparent", borderBottomWidth: 1, borderColor: "rgba(255,255,255,0.4)" },
+  backBtn: { marginRight: 15, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", flex: 1 },
+  progressText: { fontSize: 14, color: "#A3A3A3", fontFamily: 'Rajdhani_600SemiBold' },
   statsBar: { flexDirection: "row", justifyContent: "center", gap: 15, paddingVertical: 15 },
-  statPill: { flexDirection: "row", alignItems: "center", backgroundColor: "#FFF", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: "#EBEBEB" },
+  statPill: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.12)", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.5)" },
+  statText: { color: "#FFF",
+    fontFamily: 'Rajdhani_500Medium', },
   dot: { width: 8, height: 8, borderRadius: 4, marginRight: 6 },
   content: { flex: 1, padding: 20, alignItems: "center" },
-  flashcard: { width: "100%", flex: 1, maxHeight: 400, backgroundColor: "#FFF", borderRadius: 24, padding: 30, justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#EBEBEB", shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 3 },
-  cardIndicator: { position: "absolute", top: 20, left: 20, color: "#FF9800", fontWeight: "700", textTransform: "uppercase", fontSize: 12 },
-  cardText: { fontSize: 22, color: "#1A1A2E", textAlign: "center", fontWeight: "500", lineHeight: 32 },
-  tapPrompt: { position: "absolute", bottom: 20, color: "#9E9E9E", fontSize: 12 },
+  flashcard: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10, width: "100%", flex: 1, maxHeight: 400, backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 24, padding: 30, justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.5)" },
+  cardIndicator: { position: "absolute", top: 20, left: 20, color: "#4C4C4C", fontFamily: 'Rajdhani_700Bold', textTransform: "uppercase", fontSize: 12 },
+  cardText: { fontSize: 22, color: "#F4F4F4", textAlign: "center", fontFamily: 'Rajdhani_500Medium', lineHeight: 32 },
+  tapPrompt: { position: "absolute", bottom: 20, color: "#A3A3A3", fontSize: 12,
+    fontFamily: 'Rajdhani_500Medium', },
   controls: { flexDirection: "row", alignItems: "center", marginTop: 30, width: "100%", justifyContent: "space-between", paddingHorizontal: 10 },
-  navBtn: { width: 50, height: 50, borderRadius: 25, backgroundColor: "#FFF", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#EBEBEB" },
+  navBtn: { width: 50, height: 50, borderRadius: 25, backgroundColor: "rgba(255,255,255,0.12)", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.5)" },
   actionBtn: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 12, borderRadius: 25, gap: 5 },
-  actionBtnText: { color: "#FFF", fontWeight: "700", fontSize: 14 },
+  actionBtnText: { color: "#FFF", fontFamily: 'Rajdhani_700Bold', fontSize: 14 },
 });

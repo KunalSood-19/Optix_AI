@@ -32,7 +32,7 @@ export default function StudySummaryScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1A1A2E" />
+          <Ionicons name="arrow-back" size={24} color="#F4F4F4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Summary - {title}</Text>
       </View>
@@ -51,7 +51,7 @@ export default function StudySummaryScreen({ route, navigation }) {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#673AB7" />
+          <ActivityIndicator size="large" color="#4C4C4C" />
           <Text style={styles.loadingText}>Synthesizing {level.toLowerCase()} summary...</Text>
         </View>
       ) : (
@@ -66,18 +66,26 @@ export default function StudySummaryScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
+  container: { flex: 1, backgroundColor: "#050505" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  loadingText: { marginTop: 12, color: "#9E9E9E", fontSize: 16 },
-  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "#FFF" },
-  backBtn: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E", flex: 1 },
-  tabs: { flexDirection: "row", backgroundColor: "#FFF", borderBottomWidth: 1, borderColor: "#EBEBEB" },
+  loadingText: { marginTop: 12, color: "#A3A3A3", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
+  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "transparent" },
+  backBtn: { marginRight: 15, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", flex: 1 },
+  tabs: { flexDirection: "row", backgroundColor: "transparent", borderBottomWidth: 1, borderColor: "rgba(255,255,255,0.4)" },
   tab: { flex: 1, paddingVertical: 14, alignItems: "center" },
-  activeTab: { borderBottomWidth: 2, borderColor: "#673AB7" },
-  tabText: { fontSize: 14, color: "#9E9E9E", fontWeight: "600" },
-  activeTabText: { color: "#673AB7" },
+  activeTab: { borderBottomWidth: 2, borderColor: "#4C4C4C" },
+  tabText: { fontSize: 14, color: "#A3A3A3", fontFamily: 'Rajdhani_600SemiBold' },
+  activeTabText: { color: "#4C4C4C",
+    fontFamily: 'Rajdhani_500Medium', },
   content: { padding: 20 },
-  card: { backgroundColor: "#FFF", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#EBEBEB" },
-  summaryText: { fontSize: 16, color: "#333", lineHeight: 26 },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10, backgroundColor: "rgba(255,255,255,0.12)", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.5)" },
+  summaryText: { fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", lineHeight: 26 },
 });

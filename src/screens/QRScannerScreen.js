@@ -105,7 +105,7 @@ export default function QRScannerScreen({ route, navigation }) {
   if (!permission.granted) {
     return (
       <View style={styles.center}>
-        <Ionicons name="camera-outline" size={80} color="#D97757" />
+        <Ionicons name="camera-outline" size={80} color="#A3A3A3" />
         <Text style={styles.permissionText}>
           Camera permission is required to analyze items or code layouts.
         </Text>
@@ -180,7 +180,7 @@ export default function QRScannerScreen({ route, navigation }) {
           <View style={styles.aiResultOverlayCard}>
             {processingAI ? (
               <View style={styles.aiRowLoader}>
-                <ActivityIndicator size="small" color="#D97757" />
+                <ActivityIndicator size="small" color="#A3A3A3" />
                 <Text style={styles.aiProcessingLabel}>AI computing matrix...</Text>
               </View>
             ) : (
@@ -220,31 +220,32 @@ export default function QRScannerScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#050505",
   },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 30,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "#050505",
   },
   permissionText: {
     fontSize: 16,
-    color: "#555",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#A3A3A3",
     textAlign: "center",
     marginTop: 20,
     marginBottom: 25,
   },
   permissionBtn: {
-    backgroundColor: "#D97757",
+    backgroundColor: "#4D4D4D",
     paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 12,
   },
   permissionBtnText: {
     color: "#fff",
-    fontWeight: "600",
+    fontFamily: 'Rajdhani_600SemiBold',
     fontSize: 16,
   },
   overlay: {
@@ -256,12 +257,12 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderWidth: 3,
-    borderColor: "#D97757",
+    borderColor: "#A3A3A3",
     borderRadius: 20,
     backgroundColor: "transparent",
   },
   aiScanBox: {
-    borderColor: "#673AB7", // Purple matching Object Identifier theme
+    borderColor: "#A3A3A3", 
     borderStyle: "dashed",
   },
   scanText: {
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     textAlign: "center",
     paddingHorizontal: 20,
-    fontWeight: "500",
+    fontFamily: 'Rajdhani_500Medium',
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
     height: 76,
     borderRadius: 38,
     borderWidth: 4,
-    borderColor: "#FFFFFF",
+    borderColor: "#F4F4F4",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(255,255,255,0.2)",
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F4F4",
   },
   scanAgainBtn: {
     position: "absolute",
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D97757",
+    backgroundColor: "#4D4D4D",
     paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 30,
@@ -314,10 +315,10 @@ const styles = StyleSheet.create({
   scanAgainText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: 'Rajdhani_600SemiBold',
   },
   aiResultOverlayCard: {
-    backgroundColor: "rgba(26, 26, 46, 0.92)",
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
     marginHorizontal: 24,
     borderRadius: 16,
     padding: 16,
@@ -326,7 +327,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.15)",
+    borderColor: "rgba(255,255,255,0.5)",
   },
   aiRowLoader: {
     flexDirection: "row",
@@ -335,21 +336,21 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   aiProcessingLabel: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 14,
-    fontWeight: "500",
+    fontFamily: 'Rajdhani_500Medium',
   },
   aiContextTag: {
     fontSize: 10,
-    fontWeight: "700",
-    color: "#D97757",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#A3A3A3",
     letterSpacing: 1.2,
     marginBottom: 6,
   },
   aiTypewriterText: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 14,
     lineHeight: 22,
-    fontWeight: "500",
+    fontFamily: 'Rajdhani_500Medium',
   },
 });

@@ -6,12 +6,12 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
+  TextInput
  } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { Alert } from "react-native";
 import { supabase } from "../services/supabaseClient";
 import { useEffect, useState } from "react";
-import { Image } from "react-native";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -22,8 +22,6 @@ const vaults = [
     desc: "Saved math problems",
     screen: "Study",
     nestedScreen: "MathHistory",
-    color: "#4FC3F7",
-    bg: "rgba(79, 195, 247, 0.15)",
   },
   {
     icon: "journal-outline",
@@ -31,24 +29,18 @@ const vaults = [
     desc: "Saved handwritten notes",
     screen: "Study",
     nestedScreen: "HandwritingHistory",
-    color: "#81C784",
-    bg: "rgba(129, 199, 132, 0.15)",
   },
   {
     icon: "folder-outline",
     label: "PDF Vault",
     desc: "Store all documents",
     screen: "Vault",
-    color: "#BA68C8",
-    bg: "rgba(186, 104, 200, 0.15)",
   },
   {
     icon: "card-outline",
     label: "Business Cards",
     desc: "Saved business cards",
     screen: "Vault",
-    color: "#FFB74D",
-    bg: "rgba(255, 183, 77, 0.15)",
   },
   {
     icon: "time-outline",
@@ -56,8 +48,6 @@ const vaults = [
     desc: "All past searches",
     screen: "Study",
     nestedScreen: "StudyHistory",
-    color: "#FF8A65",
-    bg: "rgba(255, 138, 101, 0.15)",
   }
 ];
 
@@ -69,10 +59,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   async function getUser() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+    const { data: { user } } = await supabase.auth.getUser();
     setUser(user);
   }
 
@@ -81,10 +68,7 @@ export default function HomeScreen({ navigation }) {
       user?.email || "Profile",
       "What would you like to do?",
       [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
+        { text: "Cancel", style: "cancel" },
         {
           text: "Logout",
           style: "destructive",
@@ -99,95 +83,100 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      <LinearGradient
-        colors={['#1c0c3a', '#080512', '#0e2b4d']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
+      
+      {/* Background Glow */}
+      <View style={styles.glowCircle} />
+      
       <SafeAreaView style={styles.safeArea}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate("Scanner")}>
-            <Image
-              source={require("../../assets/optix-logo-Photoro.png")}
-              style={styles.headerLogo}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.avatarCircle}
-            onPress={handleProfilePress}
-          >
-            <Text style={styles.avatarText}>
-              {user?.email?.charAt(0)?.toUpperCase() || "?"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Hero Banner */}
-        <BlurView intensity={40} tint="dark" style={styles.heroBanner}>
-          <View style={styles.heroTextBlock}>
-            <Text style={styles.heroTitle}>Scan anything,{"\n"}understand instantly</Text>
-            <Text style={styles.heroSub}>Powered by Optix AI</Text>
-          </View>
-          <View style={styles.heroIconWrap}>
-            <Ionicons name="scan-outline" size={52} color="#FFFFFF" opacity={0.25} />
-          </View>
-        </BlurView>
-
-        {/* Scan Button */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate("Scanner")}
-        >
-          <BlurView intensity={40} tint="dark" style={styles.scanBtn}>
-            <View style={styles.scanBtnInner}>
-              <View style={styles.scanBtnIcon}>
-                <Ionicons name="camera" size={20} color="#1A1A2E" />
-              </View>
-              <Text style={styles.scanBtnText}>Open Scanner</Text>
+          {/* Header */}
+          <View style={styles.header}>
+            <View>
+              <Text style={styles.heroTitle}>You're on a wave{"\n"}of productivity!</Text>
             </View>
-            <Ionicons name="arrow-forward" size={20} color="#FFFFFF" opacity={0.5} />
-          </BlurView>
-        </TouchableOpacity>
-
-        <Text style={styles.sectionTitle}>Vaults & History</Text>
-        <View style={styles.grid}>
-          {vaults.map((f, i) => (
-            <TouchableOpacity
-              key={i}
-              style={styles.cardContainer}
-              activeOpacity={0.75}
-              onPress={() => {
-                if (f.label === "Business Card Vault") {
-                  Alert.alert("Coming Soon", "Business Card Vault is coming in a future update!");
-                  return;
-                }
-                if (f.nestedScreen) {
-                  navigation.navigate(f.screen, { screen: f.nestedScreen });
-                } else if (f.screen) {
-                  navigation.navigate(f.screen);
-                } else {
-                  navigation.navigate("Scanner", { mode: f.mode });
-                }
-              }}
-            >
-              <BlurView intensity={40} tint="dark" style={styles.card}>
-                <View style={[styles.iconBox, { backgroundColor: f.bg }]}>
-                  <Ionicons name={f.icon} size={22} color={f.color} />
-                </View>
-                <Text style={styles.cardTitle}>{f.label}</Text>
-                <Text style={styles.cardDesc}>{f.desc}</Text>
-              </BlurView>
+            <TouchableOpacity style={styles.avatarCircle} onPress={handleProfilePress}>
+              <Text style={styles.avatarText}>
+                {user?.email?.charAt(0)?.toUpperCase() || "K"}
+              </Text>
             </TouchableOpacity>
-          ))}
-        </View>
+          </View>
 
-        <View style={styles.bottomSpacer} />
-      </ScrollView>
+          {/* Search Bar */}
+          <TouchableOpacity 
+            activeOpacity={0.9} 
+            style={styles.searchContainer}
+            onPress={() => navigation.navigate("Assistant")}
+          >
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Ask Optix Assistant..."
+              placeholderTextColor="#A3A3A3"
+              editable={false}
+              pointerEvents="none"
+            />
+            <View style={styles.micButton}>
+              <Ionicons name="mic" size={16} color="#FFF" />
+            </View>
+          </TouchableOpacity>
+
+          {/* Quick Actions */}
+          <View style={styles.quickActions}>
+            <TouchableOpacity 
+              style={styles.actionPill} 
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("Scanner", { mode: "document" })}
+            >
+              <Ionicons name="scan-outline" size={16} color="#FFF" />
+              <Text style={styles.actionPillText}>Scan Document</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.actionPill} 
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("Scanner", { mode: "qr" })}
+            >
+              <Ionicons name="qr-code-outline" size={16} color="#FFF" />
+              <Text style={styles.actionPillText}>QR Code</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Activity Section */}
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Your Activity</Text>
+            <Ionicons name="chevron-forward" size={18} color="#A3A3A3" />
+          </View>
+
+          {/* Grid Vaults */}
+          <View style={styles.grid}>
+            {vaults.map((f, i) => (
+              <TouchableOpacity
+                key={i}
+                style={styles.cardContainer}
+                activeOpacity={0.75}
+                onPress={() => {
+                  if (f.nestedScreen) {
+                    navigation.navigate(f.screen, { screen: f.nestedScreen });
+                  } else if (f.screen) {
+                    navigation.navigate(f.screen);
+                  } else {
+                    navigation.navigate("Scanner", { mode: f.mode });
+                  }
+                }}
+              >
+                <BlurView intensity={40} tint="dark" style={styles.card}>
+                  <View style={styles.iconBox}>
+                    <Ionicons name={f.icon} size={22} color="#FFF" />
+                  </View>
+                  <Text style={styles.cardTitle}>{f.label}</Text>
+                  <Text style={styles.cardDesc}>{f.desc}</Text>
+                </BlurView>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View style={styles.bottomSpacer} />
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -196,7 +185,16 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#050505",
+  },
+  glowCircle: {
+    position: 'absolute',
+    top: -100,
+    left: -100,
+    width: 400,
+    height: 400,
+    borderRadius: 200,
+    backgroundColor: 'rgba(255,255,255,0.03)',
   },
   safeArea: {
     flex: 1,
@@ -204,156 +202,131 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 24,
   },
-
-  /* Header */
   header: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
-    paddingHorizontal: 27,
-    paddingTop: 48, // Added padding for translucent status bar
-    paddingBottom: 16,
-    backgroundColor: "transparent",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 24,
   },
-  headerLogo: {
-    width: 200,
-    height: 50,
-    marginLeft: -75
-  },
-  tagline: {
-    fontSize: 12,
-    color: "#9E9E9E",
-    marginTop: 2,
-    letterSpacing: 0.5,
+  heroTitle: {
+    fontSize: 24,
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
+    lineHeight: 32,
   },
   avatarCircle: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#D97757",
+    backgroundColor: "rgba(255,255,255,0.2)",
     alignItems: "center",
     justifyContent: "center",
   },
   avatarText: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "700",
+    fontFamily: 'Rajdhani_700Bold',
   },
-
-  /* Hero */
-  heroBanner: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-    marginTop: 14,
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 24,
-    padding: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.15)",
-    overflow: "hidden",
+    borderColor: 'rgba(255,255,255,0.1)',
+    marginBottom: 20,
   },
-  heroTextBlock: {
+  searchInput: {
     flex: 1,
+    color: '#FFF',
+    fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium',
   },
-  heroTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    lineHeight: 28,
-    letterSpacing: -0.2,
+  micButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  heroSub: {
-    fontSize: 12,
-    color: "#D97757",
-    marginTop: 6,
-    fontWeight: "500",
+  quickActions: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    gap: 12,
+    marginBottom: 32,
   },
-  heroIconWrap: {
-    marginLeft: 12,
-  },
-
-  /* Scan Button */
-  scanBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-    marginTop: 12,
-    padding: 16,
+  actionPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.15)",
-    overflow: "hidden",
+    borderColor: 'rgba(255,255,255,0.1)',
+    gap: 8,
   },
-  scanBtnInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+  actionPillText: {
+    color: '#F4F4F4',
+    fontSize: 13,
+    fontFamily: 'Rajdhani_600SemiBold',
   },
-  scanBtnIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 16,
   },
-  scanBtnText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
-  },
-
-  /* Section */
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    paddingHorizontal: 20,
-    marginTop: 26,
-    marginBottom: 14,
-    letterSpacing: -0.1,
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
   },
-
-  /* Grid */
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingHorizontal: 12,
-    gap: 10,
+    paddingHorizontal: 14,
+    justifyContent: 'space-between',
   },
   cardContainer: {
-    width: "47%",
-    borderRadius: 22,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    width: "48%",
+    marginBottom: 14,
   },
   card: {
-    padding: 18,
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.1)", // Extra darkness for Android where blur fails
+    borderRadius: 20,
+    padding: 16,
+    height: 140,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(255, 255, 255, 0.02)',
+    overflow: 'hidden',
   },
   iconBox: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    alignItems: "center",
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "flex-start",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: 20,
   },
   cardTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
     marginBottom: 4,
   },
   cardDesc: {
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.6)",
+    color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium',
     lineHeight: 16,
   },
-
-  bottomSpacer: { height: 12 },
+  bottomSpacer: { height: 40 },
 });

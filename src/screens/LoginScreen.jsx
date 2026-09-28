@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { 
   View,
@@ -91,8 +91,8 @@ export default function LoginScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#FFFFFF"
+        barStyle="light-content"
+        backgroundColor="#050505"
       />
 
       <KeyboardAvoidingView
@@ -109,7 +109,7 @@ export default function LoginScreen({ navigation }) {
               <Ionicons
                 name="scan-outline"
                 size={32}
-                color="#D97757"
+                color="#A3A3A3"
               />
             </View>
 
@@ -144,7 +144,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.input}
                 placeholder="you@example.com"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#A3A3A3"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -167,7 +167,7 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 placeholder="••••••••"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor="#A3A3A3"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPass}
@@ -244,7 +244,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F5F9",
+    backgroundColor: "#050505",
   },
 
   scroll: {
@@ -263,57 +263,68 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 20,
-    backgroundColor: "#EEF0FF",
+    backgroundColor: "rgba(163, 163, 163, 0.15)",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 14,
+    borderWidth: 1,
+    borderColor: "rgba(163, 163, 163, 0.3)",
   },
 
   logoText: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#D97757",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#A3A3A3",
   },
 
   logoSub: {
     fontSize: 12,
-    color: "#9E9E9E",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#A3A3A3",
     marginTop: 4,
   },
 
   card: {
-    backgroundColor: "#FFFFFF",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderRadius: 20,
     padding: 24,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.4)",
   },
 
   cardTitle: {
     fontSize: 20,
-    fontWeight: "700",
-    color: "#1A1A2E",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
     marginBottom: 4,
   },
 
   cardSub: {
     fontSize: 13,
-    color: "#9E9E9E",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#A3A3A3",
     marginBottom: 24,
   },
 
   fieldLabel: {
     fontSize: 12,
-    fontWeight: "700",
-    color: "#555",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#A3A3A3",
     marginBottom: 8,
   },
 
   inputWrap: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F4F5F9",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#EBEBEB",
+    borderColor: "rgba(255,255,255,0.5)",
     paddingHorizontal: 14,
     marginBottom: 16,
     height: 50,
@@ -326,7 +337,8 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 14,
-    color: "#1A1A2E",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#F4F4F4",
   },
 
   eyeBtn: {
@@ -341,12 +353,12 @@ const styles = StyleSheet.create({
 
   forgotText: {
     fontSize: 12,
-    color: "#D97757",
-    fontWeight: "600",
+    color: "#4C4C4C",
+    fontFamily: 'Rajdhani_600SemiBold',
   },
 
   primaryBtn: {
-    backgroundColor: "#D97757",
+    backgroundColor: "#4C4C4C",
     borderRadius: 14,
     height: 52,
     justifyContent: "center",
@@ -358,9 +370,9 @@ const styles = StyleSheet.create({
   },
 
   primaryBtnText: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: 'Rajdhani_700Bold',
   },
 
   footer: {
@@ -370,11 +382,12 @@ const styles = StyleSheet.create({
   },
 
   footerText: {
-    color: "#9E9E9E",
+    color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium',
   },
 
   footerLink: {
-    color: "#D97757",
-    fontWeight: "700",
+    color: "#4C4C4C",
+    fontFamily: 'Rajdhani_700Bold',
   },
 });

@@ -49,16 +49,16 @@ export default function StudyDashboardScreen({ route, navigation }) {
   }
 
   const features = [
-    { icon: 'document-text-outline', label: 'Summary', screen: 'StudySummary', color: '#673AB7', bg: 'rgba(103, 58, 183, 0.15)' },
-    { icon: 'book-outline', label: 'Notes', screen: 'StudyNotes', color: '#009688', bg: 'rgba(0, 150, 136, 0.15)' },
-    { icon: 'albums-outline', label: 'Flashcards', screen: 'FlashcardReview', color: '#FF9800', bg: 'rgba(255, 152, 0, 0.15)' },
-    { icon: 'help-circle-outline', label: 'Quiz', screen: 'InteractiveQuiz', color: '#E91E8C', bg: 'rgba(233, 30, 140, 0.15)' },
+    { icon: 'document-text-outline', label: 'Summary', screen: 'StudySummary', color: '#4C4C4C', bg: 'rgba(77, 77, 77, 0.15)' },
+    { icon: 'book-outline', label: 'Notes', screen: 'StudyNotes', color: '#A3A3A3', bg: 'rgba(163, 163, 163, 0.15)' },
+    { icon: 'albums-outline', label: 'Flashcards', screen: 'FlashcardReview', color: '#A3A3A3', bg: 'rgba(255, 0, 127, 0.15)' },
+    { icon: 'help-circle-outline', label: 'Quiz', screen: 'InteractiveQuiz', color: '#4D4D4D', bg: 'rgba(76, 29, 125, 0.15)' },
   ];
 
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#6C63FF" />
+        <ActivityIndicator size="large" color="#4C4C4C" />
         <Text style={styles.loadingText}>Understanding concepts...</Text>
       </View>
     );
@@ -66,8 +66,8 @@ export default function StudyDashboardScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         
         <BlurView intensity={30} tint="dark" style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate("HomeDashboard")}>
@@ -143,21 +143,28 @@ export default function StudyDashboardScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0A0A0A" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0A0A0A" },
-  loadingText: { marginTop: 12, color: "#888", fontSize: 16 },
+  container: { flex: 1, backgroundColor: "#050505" },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#050505" },
+  loadingText: { marginTop: 12, color: "#888", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
   header: { flexDirection: "row", alignItems: "center", padding: 20, gap: 12, overflow: 'hidden' },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#FFF" },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.4)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#FFF" },
   content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 },
-  overviewCard: { backgroundColor: "rgba(255,255,255,0.05)", padding: 20, borderRadius: 20, marginBottom: 24, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", overflow: 'hidden' },
-  title: { fontSize: 24, fontWeight: "800", color: "#FFF", marginBottom: 12 },
-  overview: { fontSize: 15, color: "#E2E8F0", lineHeight: 24 },
-  sectionTitle: { fontSize: 14, fontWeight: "700", color: "#888", textTransform: "uppercase", letterSpacing: 1, marginBottom: 15 },
+  overviewCard: { backgroundColor: "rgba(255,255,255,0.12)", padding: 20, borderRadius: 20, marginBottom: 24, borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", overflow: 'hidden' },
+  title: { fontSize: 24, fontFamily: 'Rajdhani_700Bold', color: "#FFF", marginBottom: 12 },
+  overview: { fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", lineHeight: 24 },
+  sectionTitle: { fontSize: 14, fontFamily: 'Rajdhani_700Bold', color: "#888", textTransform: "uppercase", letterSpacing: 1, marginBottom: 15 },
   grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" },
-  card: { padding: 24, borderRadius: 24, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", overflow: 'hidden' },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10, padding: 24, borderRadius: 24, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", overflow: 'hidden' },
   iconBox: { width: 56, height: 56, borderRadius: 22, justifyContent: "center", alignItems: "center", marginBottom: 14 },
-  cardTitle: { fontSize: 15, fontWeight: "600", color: "#FFF" },
+  cardTitle: { fontSize: 15, fontFamily: 'Rajdhani_600SemiBold', color: "#FFF" },
   inlineChatWrapper: {
     marginTop: 10,
     marginBottom: 20,
@@ -165,16 +172,16 @@ const styles = StyleSheet.create({
   chatInputContainer: {
     borderRadius: 30, overflow: 'hidden',
     padding: 8, paddingLeft: 16, flexDirection: 'row', alignItems: 'center',
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.15)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.5)",
   },
   chatTextInput: {
     flex: 1, backgroundColor: "transparent", paddingHorizontal: 8,
-    paddingVertical: 12, fontSize: 16, color: "#FFFFFF",
-    fontFamily: 'Inter_500Medium',
-    fontWeight: '600', letterSpacing: 0.5,
+    paddingVertical: 12, fontSize: 16, color: "#F4F4F4",
+    fontFamily: 'Rajdhani_500Medium',
+    fontFamily: 'Rajdhani_600SemiBold', letterSpacing: 0.5,
   },
-  sendBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "#6C63FF", alignItems: "center", justifyContent: "center" },
-  sendBtnDisabled: { backgroundColor: "rgba(255,255,255,0.2)" },
+  sendBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "#4C4C4C", alignItems: "center", justifyContent: "center" },
+  sendBtnDisabled: { backgroundColor: "rgba(138,43,226,0.2)" },
 });
 
 const markdownStyles = {
@@ -182,28 +189,29 @@ const markdownStyles = {
     color: "#E2E8F0",
     fontSize: 16,
     lineHeight: 28, textAlign: 'justify',
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Rajdhani_500Medium',
   },
   strong: {
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    backgroundColor: "rgba(108, 99, 255, 0.35)",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
+    backgroundColor: "rgba(77, 77, 77, 0.35)",
   },
   em: {
     fontStyle: "italic",
     color: "#D9D9D9",
+    fontFamily: 'Rajdhani_500Medium',
   },
   heading1: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 22,
-    fontWeight: "bold",
+    fontFamily: 'Rajdhani_700Bold',
     marginTop: 10,
     marginBottom: 5,
   },
   heading2: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: 'Rajdhani_700Bold',
     marginTop: 10,
     marginBottom: 5,
   },

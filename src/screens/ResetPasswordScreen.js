@@ -66,15 +66,15 @@ export default function ResetPasswordScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#060B1A" />
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
       <KeyboardAvoidingView
         style={{ flex: 1, justifyContent: "center" }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.card}>
           {/* Header Icon & Title */}
           <View style={styles.iconContainer}>
-            <Ionicons name="key-outline" size={32} color="#D97757" />
+            <Ionicons name="key-outline" size={32} color="#A3A3A3" />
           </View>
           <Text style={styles.title}>Reset Password</Text>
           <Text style={styles.subtitle}>Enter your secure new account credentials below</Text>
@@ -151,45 +151,51 @@ export default function ResetPasswordScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#060B1A",
+    backgroundColor: "#050505",
     paddingHorizontal: 20,
   },
   card: {
-    backgroundColor: "#121826",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderRadius: 24,
     padding: 24,
     borderWidth: 1,
-    borderColor: "rgba(108,99,255,0.15)",
+    borderColor: "rgba(255,255,255,0.4)",
   },
   iconContainer: {
     alignSelf: "center",
     width: 64,
     height: 64,
     borderRadius: 20,
-    backgroundColor: "rgba(219, 119, 87, 0.1)",
+    backgroundColor: "rgba(163, 163, 163, 0.15)",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "rgba(219, 119, 87, 0.2)",
+    borderColor: "rgba(163, 163, 163, 0.3)",
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#FFFFFF",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
     textAlign: "center",
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: "#9AA4BF",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#A3A3A3",
     textAlign: "center",
     marginBottom: 24,
   },
   fieldLabel: {
     fontSize: 12,
-    fontWeight: "700",
-    color: "#9AA4BF",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#A3A3A3",
     letterSpacing: 0.5,
     marginBottom: 8,
     textTransform: "uppercase",
@@ -197,17 +203,17 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#060B1A",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(108,99,255,0.1)",
+    borderColor: "rgba(255,255,255,0.5)",
     borderRadius: 14,
     paddingHorizontal: 14,
     marginBottom: 18,
     height: 52,
   },
   inputContainerError: {
-    borderColor: "#FF5252",
-    backgroundColor: "rgba(255, 82, 82, 0.05)",
+    borderColor: "#A3A3A3",
+    backgroundColor: "rgba(255, 0, 127, 0.05)",
   },
   inputIcon: {
     marginRight: 10,
@@ -215,34 +221,36 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
-    color: "#FFFFFF",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#F4F4F4",
   },
   errorText: {
     fontSize: 12,
-    color: "#FF5252",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#A3A3A3",
     marginTop: -14,
     marginBottom: 14,
     marginLeft: 4,
   },
   button: {
-    backgroundColor: "#D97757",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+    backgroundColor: "#4C4C4C",
     height: 54,
     borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
-    shadowColor: "#D97757",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4,
   },
   buttonDisabled: {
-    backgroundColor: "rgba(217, 119, 87, 0.4)",
+    backgroundColor: "rgba(77, 77, 77, 0.4)",
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "700",
+    fontFamily: 'Rajdhani_700Bold',
   },
 });

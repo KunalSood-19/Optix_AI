@@ -23,7 +23,7 @@ const CATEGORIES = ["All", "Receipt", "General", "ID", "Certificate"];
 
 const CATEGORY_COLORS = {
   Receipt: { text: "#FFB347", bg: "rgba(255, 179, 71, 0.2)" },
-  General: { text: "#D97757", bg: "rgba(217, 119, 87, 0.2)" },
+  General: { text: "#A3A3A3", bg: "rgba(217, 119, 87, 0.2)" },
   ID: { text: "#FF6584", bg: "rgba(255, 101, 132, 0.2)" },
   Certificate: { text: "#43D9AD", bg: "rgba(67, 217, 173, 0.2)" },
 };
@@ -72,23 +72,23 @@ export default function VaultScreen({ navigation }) {
     category === "All" ? docs : docs.filter((d) => d.category === category);
 
   function getCategoryColors(cat) {
-    return CATEGORY_COLORS[cat] || { text: "#888", bg: "rgba(255,255,255,0.1)" };
+    return CATEGORY_COLORS[cat] || { text: "#888", bg: "rgba(255,255,255,0.4)" };
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
       <View style={styles.header}>
         <Text style={styles.title}>PDF Vault</Text>
         <Text style={styles.count}>{docs.length} documents</Text>
       </View>
 
       <View style={styles.searchBox}>
-        <Ionicons name="search" size={18} color="#888" />
+        <Ionicons name="search" size={18} color="#64748B" />
         <TextInput
           style={styles.searchInput}
           placeholder="Search documents..."
-          placeholderTextColor="#888"
+          placeholderTextColor="#64748B"
           value={search}
           onChangeText={handleSearch}
         />
@@ -112,7 +112,7 @@ export default function VaultScreen({ navigation }) {
 
       {filtered.length === 0 ? (
         <View style={styles.empty}>
-          <Ionicons name="folder-open-outline" size={64} color="rgba(255,255,255,0.2)" />
+          <Ionicons name="folder-open-outline" size={64} color="rgba(30,41,59,0.2)" />
           <Text style={styles.emptyText}>No documents yet</Text>
           <Text style={styles.emptySubtext}>
             Scan something to save it here
@@ -152,7 +152,7 @@ export default function VaultScreen({ navigation }) {
                   onPress={() => handleDelete(item.id)}
                   style={styles.deleteBtn}
                 >
-                  <Ionicons name="trash-outline" size={20} color="#FF6584" />
+                  <Ionicons name="trash-outline" size={20} color="#A3A3A3" />
                 </TouchableOpacity>
               </TouchableOpacity>
             );
@@ -164,7 +164,7 @@ export default function VaultScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0A0A0A" },
+  container: { flex: 1, backgroundColor: "#050505" },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -172,21 +172,23 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "transparent",
   },
-  title: { fontSize: 24, fontWeight: "bold", color: "#FFF" },
-  count: { fontSize: 14, color: "#888" },
+  title: { fontSize: 24, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4" },
+  count: { fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3" },
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.12)",
     margin: 16,
     marginTop: 0,
     paddingHorizontal: 16,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.5)",
   },
-  searchInput: { flex: 1, paddingVertical: 12, fontSize: 15, color: "#FFF" },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', color: "#F4F4F4" },
   categories: {
     flexDirection: "row",
     paddingHorizontal: 16,
@@ -197,30 +199,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.5)",
   },
-  activeCat: { backgroundColor: "#6C63FF", borderColor: "#6C63FF" },
-  catText: { fontSize: 13, color: "#888", fontWeight: "600" },
-  activeCatText: { color: "#fff" },
+  activeCat: { backgroundColor: "rgba(77, 77, 77, 0.2)", borderColor: "#4C4C4C" },
+  catText: { fontSize: 13, color: "#A3A3A3", fontFamily: 'Rajdhani_600SemiBold' },
+  activeCatText: { color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium', },
   empty: { flex: 1, alignItems: "center", justifyContent: "center", gap: 8 },
-  emptyText: { fontSize: 18, color: "#888", fontWeight: "600" },
-  emptySubtext: { fontSize: 14, color: "#555" },
+  emptyText: { fontSize: 18, color: "#F4F4F4", fontFamily: 'Rajdhani_600SemiBold' },
+  emptySubtext: { fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3" },
   docCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
     borderRadius: 16,
     marginBottom: 12,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.4)",
   },
-  thumb: { width: 70, height: 80, backgroundColor: "rgba(255,255,255,0.1)" },
+  thumb: { width: 70, height: 80, backgroundColor: "rgba(0,0,0,0.3)" },
   docInfo: { flex: 1, padding: 16, gap: 6 },
-  docTitle: { fontSize: 16, fontWeight: "600", color: "#FFF" },
-  docDate: { fontSize: 12, color: "#888" },
+  docTitle: { fontSize: 16, fontFamily: 'Rajdhani_600SemiBold', color: "#F4F4F4" },
+  docDate: { fontSize: 12,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3" },
   catBadge: {
     alignSelf: "flex-start",
     paddingHorizontal: 8,
@@ -228,6 +233,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 4,
   },
-  catBadgeText: { fontSize: 11, fontWeight: "700" },
+  catBadgeText: { fontSize: 11, fontFamily: 'Rajdhani_700Bold' },
   deleteBtn: { padding: 16 },
 });

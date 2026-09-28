@@ -107,15 +107,15 @@ export default function DocumentDetailScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back-outline" size={20} color="#1A1A2E" />
+            <Ionicons name="arrow-back-outline" size={20} color="#F4F4F4" />
           </TouchableOpacity>
           {editingTitle ? (
             <TextInput
@@ -165,9 +165,9 @@ export default function DocumentDetailScreen({ route, navigation }) {
                   <Ionicons
                     name={summaryCopied ? "checkmark-outline" : "copy-outline"}
                     size={15}
-                    color={summaryCopied ? "#00C853" : "#6C63FF"}
+                    color={summaryCopied ? "#A3A3A3" : "#4C4C4C"}
                   />
-                  <Text style={[styles.copyBtnText, summaryCopied && { color: "#00C853" }]}>
+                  <Text style={[styles.copyBtnText, summaryCopied && { color: "#A3A3A3" }]}>
                     {summaryCopied ? "Copied!" : "Copy"}
                   </Text>
                 </TouchableOpacity>
@@ -217,7 +217,7 @@ export default function DocumentDetailScreen({ route, navigation }) {
                       style={styles.suggestion}
                       onPress={() => setChatInput(q)}
                     >
-                      <Ionicons name="bulb-outline" size={14} color="#6C63FF" style={{ marginRight: 6 }} />
+                      <Ionicons name="bulb-outline" size={14} color="#4C4C4C" style={{ marginRight: 6 }} />
                       <Text style={styles.suggestionText}>{q}</Text>
                     </TouchableOpacity>
                   ))}
@@ -245,7 +245,7 @@ export default function DocumentDetailScreen({ route, navigation }) {
               ))}
               {chatLoading && (
                 <View style={styles.typingIndicator}>
-                  <ActivityIndicator size="small" color="#6C63FF" />
+                  <ActivityIndicator size="small" color="#4C4C4C" />
                   <Text style={styles.typingText}>Thinking...</Text>
                 </View>
               )}
@@ -278,38 +278,38 @@ export default function DocumentDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
+  container: { flex: 1, backgroundColor: "#050505" },
   header: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 14,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
     borderBottomWidth: 1,
-    borderColor: "#EBEBEB",
+    borderColor: "rgba(255,255,255,0.4)",
     gap: 10,
   },
   backBtn: {
     width: 36, height: 36, borderRadius: 10,
-    backgroundColor: "#F4F5F9", alignItems: "center", justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center",
   },
   titleWrap: { flex: 1, flexDirection: "row", alignItems: "center" },
-  headerTitle: { fontSize: 15, fontWeight: "700", color: "#1A1A2E", flex: 1 },
+  headerTitle: { fontSize: 15, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", flex: 1 },
   titleInput: {
-    flex: 1, fontSize: 15, fontWeight: "700", color: "#1A1A2E",
-    borderBottomWidth: 1.5, borderColor: "#6C63FF", paddingVertical: 2,
+    flex: 1, fontSize: 15, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4",
+    borderBottomWidth: 1.5, borderColor: "#A3A3A3", paddingVertical: 2,
   },
-  catBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "#EEF0FF" },
-  catText: { fontSize: 11, color: "#6C63FF", fontWeight: "700" },
-  preview: { width: "100%", height: 200, backgroundColor: "#EBEBEB" },
+  catBadge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "rgba(138,43,226,0.2)" },
+  catText: { fontSize: 11, color: "#4C4C4C", fontFamily: 'Rajdhani_700Bold' },
+  preview: { width: "100%", height: 200, backgroundColor: "rgba(0,0,0,0.5)" },
   tabs: {
-    flexDirection: "row", backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1, borderColor: "#EBEBEB",
+    flexDirection: "row", backgroundColor: "rgba(255,255,255,0.02)",
+    borderBottomWidth: 1, borderColor: "rgba(255,255,255,0.4)",
   },
   tab: { flex: 1, paddingVertical: 13, alignItems: "center" },
-  activeTab: { borderBottomWidth: 2, borderColor: "#6C63FF" },
-  tabText: { fontSize: 13, color: "#9E9E9E", fontWeight: "500" },
-  activeTabText: { color: "#6C63FF", fontWeight: "700" },
+  activeTab: { borderBottomWidth: 2, borderColor: "#A3A3A3" },
+  tabText: { fontSize: 13, color: "#A3A3A3", fontFamily: 'Rajdhani_500Medium' },
+  activeTabText: { color: "#A3A3A3", fontFamily: 'Rajdhani_700Bold' },
   content: { flex: 1 },
   section: { padding: 16 },
   rowHeader: {
@@ -317,55 +317,67 @@ const styles = StyleSheet.create({
     alignItems: "center", marginBottom: 10,
   },
   label: {
-    fontSize: 11, color: "#9E9E9E", fontWeight: "700",
+    fontSize: 11, color: "#A3A3A3", fontFamily: 'Rajdhani_700Bold',
     letterSpacing: 0.8, textTransform: "uppercase", marginBottom: 10, marginTop: 4,
   },
   copyBtn: {
     flexDirection: "row", alignItems: "center", gap: 4,
-    backgroundColor: "#EEF0FF", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.12)", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8,
   },
-  copyBtnText: { fontSize: 12, color: "#6C63FF", fontWeight: "600" },
+  copyBtnText: { fontSize: 12, color: "#4C4C4C", fontFamily: 'Rajdhani_600SemiBold' },
   card: {
-    backgroundColor: "#FFFFFF", borderRadius: 16, padding: 18,
-    borderWidth: 1, borderColor: "#EBEBEB", marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+    backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 16, padding: 18,
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", marginBottom: 16,
   },
-  summaryText: { fontSize: 15, color: "#1A1A2E", lineHeight: 26 },
+  summaryText: { fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', color: "#F4F4F4", lineHeight: 26 },
   extractedText: {
-    fontSize: 14, color: "#444", lineHeight: 24,
+    fontSize: 14, color: "#E2E8F0", lineHeight: 24,
     fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
   },
   metaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  dateText: { fontSize: 13, color: "#9E9E9E" },
+  dateText: { fontSize: 13,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3" },
   suggestions: { gap: 8, marginBottom: 16 },
   suggestion: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "#FFFFFF", padding: 13, borderRadius: 12,
-    borderWidth: 1, borderColor: "#EBEBEB",
+    backgroundColor: "rgba(255,255,255,0.12)", padding: 13, borderRadius: 12,
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.4)",
   },
-  suggestionText: { fontSize: 13, color: "#6C63FF", flex: 1 },
+  suggestionText: { fontSize: 13,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3", flex: 1 },
   bubble: { padding: 12, borderRadius: 16, marginBottom: 8, maxWidth: "82%" },
-  userBubble: { backgroundColor: "#6C63FF", alignSelf: "flex-end", borderBottomRightRadius: 4 },
+  userBubble: { backgroundColor: "#4C4C4C", alignSelf: "flex-end", borderBottomRightRadius: 4 },
   aiBubble: {
-    backgroundColor: "#FFFFFF", alignSelf: "flex-start",
-    borderWidth: 1, borderColor: "#EBEBEB", borderBottomLeftRadius: 4,
+    backgroundColor: "rgba(255,255,255,0.12)", alignSelf: "flex-start",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", borderBottomLeftRadius: 4,
   },
-  bubbleText: { fontSize: 14, color: "#1A1A2E", lineHeight: 20 },
-  userText: { color: "#FFFFFF" },
+  bubbleText: { fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium', color: "#F4F4F4", lineHeight: 20 },
+  userText: { color: "#F4F4F4",
+    fontFamily: 'Rajdhani_500Medium', },
   typingIndicator: { flexDirection: "row", alignItems: "center", gap: 8, paddingVertical: 8 },
-  typingText: { fontSize: 13, color: "#9E9E9E" },
+  typingText: { fontSize: 13,
+    fontFamily: 'Rajdhani_500Medium', color: "#A3A3A3" },
   chatInputBar: {
     flexDirection: "row", alignItems: "flex-end",
-    padding: 12, backgroundColor: "#FFFFFF", gap: 10,
-    borderTopWidth: 1, borderColor: "#EBEBEB",
+    padding: 12, backgroundColor: "transparent", gap: 10,
+    borderTopWidth: 1, borderColor: "rgba(255,255,255,0.4)",
   },
   chatTextInput: {
-    flex: 1, backgroundColor: "#F4F5F9", borderRadius: 20,
+    flex: 1, backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 20,
     paddingHorizontal: 16, paddingVertical: 10, fontSize: 14,
-    color: "#1A1A2E", maxHeight: 100, borderWidth: 1, borderColor: "#EBEBEB",
+    fontFamily: 'Rajdhani_500Medium',
+    color: "#F4F4F4", maxHeight: 100, borderWidth: 1, borderColor: "rgba(255,255,255,0.5)",
   },
   sendBtn: {
     width: 42, height: 42, borderRadius: 21,
-    backgroundColor: "#6C63FF", alignItems: "center", justifyContent: "center",
+    backgroundColor: "#4C4C4C", alignItems: "center", justifyContent: "center",
   },
-  sendBtnDisabled: { backgroundColor: "#C5C3F5" },
+  sendBtnDisabled: { backgroundColor: "rgba(138,43,226,0.3)" },
 });

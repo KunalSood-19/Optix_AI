@@ -10,6 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 
 const SCANNER_MODES = [
+  { id: "circleToSearch", label: "Circle Search", icon: "search-circle-outline", color: "#FF3B30" },
   { id: "document", label: "Document", icon: "scan-outline", color: "#E91E63" },
   { id: "ocr", label: "Text / OCR", icon: "text-outline", color: "#E91E8C" },
   { id: "objectDetection", label: "Object", icon: "cube-outline", color: "#9C27B0" },
@@ -28,33 +29,17 @@ export default function ScannerScreen({ navigation, route }) {
   const [facing, setFacing] = useState('back');
   const [flash, setFlash] = useState('off');
   
-  const [mode, setMode] = useState(route?.params?.mode || "document");
+  const [mode, setMode] = useState(route?.params?.mode || "circleToSearch");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isGridOpen, setIsGridOpen] = useState(false);
   
   const [capturedPages, setCapturedPages] = useState([]);
   const cameraRef = useRef(null);
   const flatListRef = useRef(null);
 
-  const ITEM_WIDTH = 110;
-  const { width: screenWidth } = Dimensions.get('window');
-  const PADDING_HORIZONTAL = (screenWidth - ITEM_WIDTH) / 2;
-
-  const handleScrollEnd = (event) => {
-    const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollPosition / ITEM_WIDTH);
-    if (SCANNER_MODES[index]) {
-      setMode(SCANNER_MODES[index].id);
-    }
-  };
-
-  const handleModeSelect = (item, index) => {
+  const handleModeSelect = (item) => {
     setMode(item.id);
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({
-        offset: index * ITEM_WIDTH,
-        animated: true,
-      });
-    }
+    setIsGridOpen(false);
   };
 
   const laserAnim = useRef(new Animated.Value(0)).current;
@@ -147,7 +132,7 @@ export default function ScannerScreen({ navigation, route }) {
         return;
       }
 
-      const isOcrMode = mode !== "objectDetection";
+      const isOcrMode = mode !== "objectDetection" && mode !== "circleToSearch";
       const compressQuality = 0.8;
       
       const compressed = await ImageManipulator.manipulateAsync(
@@ -166,6 +151,18 @@ export default function ScannerScreen({ navigation, route }) {
       }
 
       const base64Data = compressed.base64 || rawBase64;
+
+      
+      if (mode === "circleToSearch") {
+        navigation.navigate("CircleSearchEditor", {
+          imageUri: compressed.uri,
+          base64: base64Data,
+          imageWidth: compressed.width,
+          imageHeight: compressed.height
+        });
+        setIsProcessing(false);
+        return;
+      }
 
       if (mode === "handwriting") {
         setCapturedPages(prev => [...prev, base64Data]);
@@ -247,7 +244,7 @@ export default function ScannerScreen({ navigation, route }) {
               type: 'image/jpeg',
             });
             
-            const response = await fetch('http://api.qrserver.com/v1/read-qr-code/', {
+            const response = await fetch('https://api.qrserver.com/v1/read-qr-code/', {
               method: 'POST',
               body: formData,
               headers: {
@@ -293,10 +290,10 @@ export default function ScannerScreen({ navigation, route }) {
               <Ionicons name="home" size={24} color="#FFF" style={styles.iconShadow} />
             </TouchableOpacity>
             
-            <View style={styles.modeBadge}>
+            <TouchableOpacity style={styles.modeBadge} onPress={() => setIsGridOpen(true)}>
                <Ionicons name={activeModeItem.icon} size={14} color="#FFCC00" />
                <Text style={styles.modeBadgeText}>{activeModeItem.label}</Text>
-            </View>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.iconBtn} onPress={toggleFlash}>
               <Ionicons name={flash === 'on' ? "flash" : "flash-off"} size={24} color={flash === 'on' ? "#FFCC00" : "#FFF"} style={styles.iconShadow} />
@@ -350,44 +347,12 @@ export default function ScannerScreen({ navigation, route }) {
 
           {/* Bottom Controls with BlurView Dock */}
           <View style={styles.bottomArea}>
-            {/* Mode Selector Carousel */}
-            <View style={styles.carouselContainer}>
-              <FlatList 
-                ref={flatListRef}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: PADDING_HORIZONTAL, alignItems: 'center' }}
-                snapToInterval={ITEM_WIDTH}
-                decelerationRate="fast"
-                data={SCANNER_MODES}
-                keyExtractor={item => item.id}
-                onMomentumScrollEnd={handleScrollEnd}
-                onScrollEndDrag={handleScrollEnd}
-                getItemLayout={(data, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index })}
-                initialScrollIndex={Math.max(0, SCANNER_MODES.findIndex(m => m.id === mode))}
-                renderItem={({ item, index }) => {
-                  const isSelected = item.id === mode;
-                  return (
-                    <TouchableOpacity
-                      style={[styles.carouselItem, { width: ITEM_WIDTH }]}
-                      onPress={() => handleModeSelect(item, index)}
-                    >
-                      <Text 
-                        style={[
-                          styles.carouselLabel, 
-                          isSelected && { color: "#FFCC00", fontWeight: "bold", fontSize: 14 }
-                        ]}
-                        numberOfLines={1}
-                      >
-                        {item.label}
-                      </Text>
-                      {isSelected && <View style={styles.activeDot} />}
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-            </View>
-            
+            <TouchableOpacity style={styles.centerModeBadge} onPress={() => setIsGridOpen(true)}>
+               <Ionicons name={activeModeItem.icon} size={14} color="#FFCC00" />
+               <Text style={styles.centerModeBadgeText}>{activeModeItem.label}</Text>
+               <Ionicons name="chevron-up" size={14} color="#FFCC00" style={{ marginLeft: 4 }} />
+            </TouchableOpacity>
+
             <BlurView intensity={50} tint="dark" style={styles.bottomControls}>
               <View style={styles.bottomLeftActions}>
                 <TouchableOpacity style={styles.bottomIconBtn} onPress={pickFromGallery}>
@@ -404,6 +369,7 @@ export default function ScannerScreen({ navigation, route }) {
                     pressed && { transform: [{ scale: 0.95 }] },
                   ]}
                   onPress={takePicture}
+                  onLongPress={() => setIsGridOpen(true)}
                   disabled={isProcessing}
                 >
                   <View style={styles.captureBtnInner}>
@@ -419,6 +385,27 @@ export default function ScannerScreen({ navigation, route }) {
           </View>
         </SafeAreaView>
       </CameraView>
+
+      {/* Grid Modal */}
+      <Modal visible={isGridOpen} transparent animationType="fade">
+        <Pressable style={styles.modalBackground} onPress={() => setIsGridOpen(false)}>
+          <View style={styles.gridContainer}>
+            {SCANNER_MODES.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={[styles.gridItem, mode === item.id && styles.gridItemSelected]}
+                onPress={() => handleModeSelect(item)}
+              >
+                <View style={[styles.gridIconWrapper, { backgroundColor: mode === item.id ? item.color : 'rgba(255,255,255,0.05)' }]}>
+                  <Ionicons name={item.icon} size={24} color={mode === item.id ? '#FFF' : '#A3A3A3'} />
+                </View>
+                <Text style={[styles.gridItemText, mode === item.id && { color: '#FFF' }]}>{item.label}</Text>
+              </TouchableOpacity>
+            ))}
+            <Text style={styles.gridHintText}>Tap anywhere to close</Text>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -631,6 +618,83 @@ const styles = StyleSheet.create({
   processMultiText: {
     color: '#1A1A2E',
     fontWeight: 'bold',
+  },
+  
+  modalBlur: {
+    flex: 1,
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 15,
+    backgroundColor: 'rgba(25,25,25,0.7)',
+    padding: 20,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    width: 350,
+  },
+  gridItem: {
+    width: 90,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  gridItemSelected: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  gridIconWrapper: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  gridItemText: {
+    color: '#A3A3A3',
+    fontSize: 12,
+    fontFamily: 'Rajdhani_600SemiBold',
+    textAlign: 'center',
+  },
+  gridHintText: {
+    color: '#A3A3A3',
+    fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium',
+    marginTop: 30,
+  },
+
+  centerModeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 204, 0, 0.2)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 204, 0, 0.3)',
+  },
+  centerModeBadgeText: {
+    color: '#FFCC00',
+    fontSize: 13,
+    fontFamily: 'Rajdhani_700Bold',
+    textTransform: 'uppercase',
+    marginLeft: 6,
   },
   bottomArea: {
     paddingBottom: 30,

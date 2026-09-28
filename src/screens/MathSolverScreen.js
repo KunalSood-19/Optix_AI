@@ -93,7 +93,7 @@ export default function MathSolverScreen({ route, navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4CAF50" />
+        <ActivityIndicator size="large" color="#A3A3A3" />
         <Text style={styles.loadingText}>{phase}</Text>
       </View>
     );
@@ -101,8 +101,8 @@ export default function MathSolverScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         
         <BlurView intensity={30} tint="dark" style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
@@ -166,7 +166,7 @@ export default function MathSolverScreen({ route, navigation }) {
               onPress={() => fetchAIExplanation()}
               disabled={explaining}
             >
-              {explaining ? <ActivityIndicator color="#FFF" /> : <Ionicons name="sparkles-outline" size={20} color="#FFCC00" />}
+              {explaining ? <ActivityIndicator color="#FFF" /> : <Ionicons name="sparkles-outline" size={20} color="#A3A3A3" />}
               <Text style={styles.aiBtnText}>Ask Optix for Explanation</Text>
             </TouchableOpacity>
           ) : null
@@ -174,7 +174,7 @@ export default function MathSolverScreen({ route, navigation }) {
 
         {finalAnswer ? (
           <TouchableOpacity 
-            style={[styles.aiBtn, {backgroundColor: '#4CAF50', marginTop: 15}]}
+            style={[styles.aiBtn, {backgroundColor: 'rgba(163, 163, 163, 0.2)', borderColor: '#A3A3A3', borderWidth: 1, marginTop: 15}]}
             onPress={async () => {
               try {
                 await saveMathHistory(expression, deterministicSteps, finalAnswer, mathType);
@@ -225,28 +225,37 @@ export default function MathSolverScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0A0A0A" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0A0A0A" },
-  loadingText: { marginTop: 12, color: "#888", fontSize: 16 },
+  container: { flex: 1, backgroundColor: "#050505" },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#050505" },
+  loadingText: { marginTop: 12, color: "#888", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
   header: { flexDirection: "row", alignItems: "center", padding: 20, gap: 12, overflow: 'hidden' },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#FFF" },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.4)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#FFF" },
   content: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 },
   section: { marginBottom: 25 },
-  sectionTitle: { fontSize: 13, fontWeight: "700", color: "#888", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, marginLeft: 4, fontFamily: 'Inter_400Regular' },
-  warning: { color: "#FF9800", fontSize: 13, marginBottom: 10, fontWeight: "600" },
+  sectionTitle: { fontSize: 13, fontFamily: 'Rajdhani_700Bold', color: "#888", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, marginLeft: 4, fontFamily: 'Rajdhani_500Medium' },
+  warning: { color: "#FF9800", fontSize: 13, marginBottom: 10, fontFamily: 'Rajdhani_600SemiBold' },
   inputContainer: { flexDirection: "row", gap: 10 },
-  input: { flex: 1, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", borderRadius: 16, padding: 15, fontSize: 16, color: "#FFF", minHeight: 60 },
-  solveBtn: { backgroundColor: "#6C63FF", justifyContent: "center", alignItems: "center", paddingHorizontal: 20, borderRadius: 16 },
-  solveBtnText: { color: "#FFF", fontWeight: "700" },
-  stepsCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", gap: 10 },
-  stepText: { fontSize: 15, color: "#E2E8F0", lineHeight: 24 },
-  answerCard: { backgroundColor: "rgba(76, 175, 80, 0.1)", borderRadius: 16, padding: 20, borderWidth: 1, borderColor: "rgba(76, 175, 80, 0.3)", alignItems: "center" },
-  answerText: { fontSize: 24, fontWeight: "700", color: "#4CAF50", fontFamily: 'Inter_400Regular' },
-  card: { backgroundColor: "rgba(255,255,255,0.05)", padding: 20, borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", overflow: 'hidden' },
-  explanationText: { fontSize: 15, color: "#E2E8F0", lineHeight: 24 },
-  aiBtn: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.1)", padding: 16, borderRadius: 16, alignItems: "center", justifyContent: "center", gap: 10, marginTop: 10 },
-  aiBtnText: { color: "#FFF", fontSize: 15, fontWeight: "600" },
+  input: { flex: 1, backgroundColor: "rgba(255,255,255,0.12)", borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", borderRadius: 16, padding: 15, fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', color: "#FFF", minHeight: 60 },
+  solveBtn: { backgroundColor: "#4C4C4C", justifyContent: "center", alignItems: "center", paddingHorizontal: 20, borderRadius: 16 },
+  solveBtnText: { color: "#FFF", fontFamily: 'Rajdhani_700Bold' },
+  stepsCard: { backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", gap: 10 },
+  stepText: { fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", lineHeight: 24 },
+  answerCard: { backgroundColor: "rgba(163, 163, 163, 0.1)", borderRadius: 16, padding: 20, borderWidth: 1, borderColor: "rgba(163, 163, 163, 0.3)", alignItems: "center" },
+  answerText: { fontSize: 24, fontFamily: 'Rajdhani_700Bold', color: "#A3A3A3", fontFamily: 'Rajdhani_500Medium' },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10, backgroundColor: "rgba(255,255,255,0.12)", padding: 20, borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.4)", overflow: 'hidden' },
+  explanationText: { fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", lineHeight: 24 },
+  aiBtn: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.4)", padding: 16, borderRadius: 16, alignItems: "center", justifyContent: "center", gap: 10, marginTop: 10 },
+  aiBtnText: { color: "#FFF", fontSize: 15, fontFamily: 'Rajdhani_600SemiBold' },
   inlineChatWrapper: {
     marginTop: 10,
     marginBottom: 20,
@@ -254,16 +263,16 @@ const styles = StyleSheet.create({
   chatInputContainer: {
     borderRadius: 30, overflow: 'hidden',
     padding: 8, paddingLeft: 16, flexDirection: 'row', alignItems: 'center',
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.15)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.5)",
   },
   chatTextInput: {
     flex: 1, backgroundColor: "transparent", paddingHorizontal: 8,
-    paddingVertical: 12, fontSize: 16, color: "#FFFFFF",
-    fontFamily: 'Inter_500Medium',
-    fontWeight: '600', letterSpacing: 0.5,
+    paddingVertical: 12, fontSize: 16, color: "#F4F4F4",
+    fontFamily: 'Rajdhani_500Medium',
+    fontFamily: 'Rajdhani_600SemiBold', letterSpacing: 0.5,
   },
-  sendBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "#6C63FF", alignItems: "center", justifyContent: "center" },
-  sendBtnDisabled: { backgroundColor: "rgba(255,255,255,0.2)" },
+  sendBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "#4C4C4C", alignItems: "center", justifyContent: "center" },
+  sendBtnDisabled: { backgroundColor: "rgba(138,43,226,0.3)" },
 });
 
 const markdownStyles = {
@@ -271,35 +280,38 @@ const markdownStyles = {
     color: "#E2E8F0",
     fontSize: 16,
     lineHeight: 28, textAlign: 'justify',
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Rajdhani_500Medium',
   },
   strong: {
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
   },
   code_inline: {
     backgroundColor: "transparent",
-    color: "#FFCC00",
+    color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium',
   },
   code_block: {
     backgroundColor: "transparent",
-    color: "#FFCC00",
+    color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium',
   },
   em: {
     fontStyle: "italic",
     color: "#D9D9D9",
+    fontFamily: 'Rajdhani_500Medium',
   },
   heading1: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 22,
-    fontWeight: "bold",
+    fontFamily: 'Rajdhani_700Bold',
     marginTop: 10,
     marginBottom: 5,
   },
   heading2: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: 'Rajdhani_700Bold',
     marginTop: 10,
     marginBottom: 5,
   },

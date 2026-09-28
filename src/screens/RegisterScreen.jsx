@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { 
   View, Text, TextInput, TouchableOpacity,
@@ -61,7 +61,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#060B1A" />
+      <StatusBar barStyle="light-content" backgroundColor="#050505" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -71,14 +71,14 @@ export default function RegisterScreen({ navigation }) {
           {/* Header Action Row */}
           <View style={styles.topRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back-outline" size={20} color="#FFFFFF" />
+              <Ionicons name="arrow-back-outline" size={20} color="#F4F4F4" />
             </TouchableOpacity>
           </View>
 
           {/* Branding Logo Structure */}
           <View style={styles.logoBlock}>
             <View style={styles.logoCircle}>
-              <Ionicons name="scan-outline" size={32} color="#D97757" />
+              <Ionicons name="scan-outline" size={32} color="#A3A3A3" />
             </View>
             <Text style={styles.logoText}>Optix</Text>
           </View>
@@ -178,7 +178,7 @@ export default function RegisterScreen({ navigation }) {
               activeOpacity={0.85}
             >
               {loading
-                ? <ActivityIndicator color="#FFFFFF" />
+                ? <ActivityIndicator color="#F4F4F4" />
                 : <Text style={styles.primaryBtnText}>Create Account</Text>}
             </TouchableOpacity>
 
@@ -206,7 +206,7 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: "#060B1A" 
+    backgroundColor: "#050505" 
   },
   scroll: { 
     flexGrow: 1, 
@@ -221,9 +221,9 @@ const styles = StyleSheet.create({
     width: 40, 
     height: 40, 
     borderRadius: 12,
-    backgroundColor: "#121826", 
+    backgroundColor: "rgba(255,255,255,0.12)", 
     borderWidth: 1, 
-    borderColor: "rgba(108,99,255,0.15)",
+    borderColor: "rgba(255,255,255,0.4)",
     alignItems: "center", 
     justifyContent: "center",
   },
@@ -235,41 +235,47 @@ const styles = StyleSheet.create({
     width: 72, 
     height: 72, 
     borderRadius: 22,
-    backgroundColor: "rgba(219, 119, 87, 0.1)", 
+    backgroundColor: "rgba(163, 163, 163, 0.15)", 
     alignItems: "center",
     justifyContent: "center", 
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "rgba(219, 119, 87, 0.2)",
+    borderColor: "rgba(163, 163, 163, 0.3)",
   },
   logoText: { 
     fontSize: 24, 
-    fontWeight: "700", 
-    color: "#FFFFFF", 
+    fontFamily: 'Rajdhani_700Bold', 
+    color: "#A3A3A3", 
     letterSpacing: -0.5 
   },
   card: {
-    backgroundColor: "#121826", 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+    backgroundColor: "rgba(255,255,255,0.12)", 
     borderRadius: 24,
     padding: 24, 
     borderWidth: 1, 
-    borderColor: "rgba(108,99,255,0.15)",
+    borderColor: "rgba(255,255,255,0.4)",
   },
   cardTitle: { 
     fontSize: 22, 
-    fontWeight: "700", 
-    color: "#FFFFFF", 
+    fontFamily: 'Rajdhani_700Bold', 
+    color: "#F4F4F4", 
     marginBottom: 4 
   },
   cardSub: { 
-    fontSize: 14, 
-    color: "#9AA4BF", 
+    fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium', 
+    color: "#A3A3A3", 
     marginBottom: 24 
   },
   fieldLabel: {
     fontSize: 12, 
-    fontWeight: "700", 
-    color: "#9AA4BF",
+    fontFamily: 'Rajdhani_700Bold', 
+    color: "#A3A3A3",
     letterSpacing: 0.5, 
     marginBottom: 8, 
     marginTop: 4,
@@ -278,25 +284,26 @@ const styles = StyleSheet.create({
   inputWrap: {
     flexDirection: "row", 
     alignItems: "center",
-    backgroundColor: "#060B1A", 
+    backgroundColor: "rgba(255,255,255,0.12)", 
     borderRadius: 14,
     borderWidth: 1, 
-    borderColor: "rgba(108,99,255,0.1)",
+    borderColor: "rgba(255,255,255,0.5)",
     paddingHorizontal: 14, 
     marginBottom: 16, 
     height: 52,
   },
   inputWrapError: { 
-    borderColor: "#FF5252", 
-    backgroundColor: "rgba(255, 82, 82, 0.05)" 
+    borderColor: "#A3A3A3", 
+    backgroundColor: "rgba(255, 0, 127, 0.05)" 
   },
   inputIcon: { 
     marginRight: 10 
   },
   input: { 
     flex: 1, 
-    fontSize: 15, 
-    color: "#FFFFFF" 
+    fontSize: 15,
+    fontFamily: 'Rajdhani_500Medium', 
+    color: "#F4F4F4" 
   },
   eyeBtn: { 
     padding: 4 
@@ -312,7 +319,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     height: 4, 
     borderRadius: 2, 
-    backgroundColor: "#060B1A",
+    backgroundColor: "rgba(255,255,255,0.4)",
   },
   strengthFill: { 
     height: 4, 
@@ -320,47 +327,44 @@ const styles = StyleSheet.create({
   },
   strengthLabel: { 
     fontSize: 11, 
-    fontWeight: "700", 
+    fontFamily: 'Rajdhani_700Bold', 
     minWidth: 54, 
     textAlign: "right" 
   },
   errorText: { 
-    fontSize: 12, 
-    color: "#FF5252", 
+    fontSize: 12,
+    fontFamily: 'Rajdhani_500Medium', 
+    color: "#A3A3A3", 
     marginTop: -12, 
     marginBottom: 8,
     marginLeft: 4
   },
   primaryBtn: {
-    backgroundColor: "#D97757", 
+    backgroundColor: "#4C4C4C", 
     borderRadius: 14,
     height: 54, 
     alignItems: "center", 
     justifyContent: "center",
-    shadowColor: "#D97757",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4
   },
   primaryBtnDisabled: { 
-    backgroundColor: "rgba(217, 119, 87, 0.4)" 
+    backgroundColor: "rgba(77, 77, 77, 0.4)" 
   },
   primaryBtnText: { 
-    color: "#FFFFFF", 
+    color: "#F4F4F4", 
     fontSize: 16, 
-    fontWeight: "700" 
+    fontFamily: 'Rajdhani_700Bold' 
   },
   terms: { 
-    fontSize: 12, 
-    color: "#8D8FA5", 
+    fontSize: 12,
+    fontFamily: 'Rajdhani_500Medium', 
+    color: "#A3A3A3", 
     textAlign: "center", 
     marginTop: 18, 
     lineHeight: 18 
   },
   termsLink: { 
-    color: "#D97757", 
-    fontWeight: "600" 
+    color: "#4C4C4C", 
+    fontFamily: 'Rajdhani_600SemiBold' 
   },
   footer: { 
     flexDirection: "row", 
@@ -368,12 +372,13 @@ const styles = StyleSheet.create({
     marginTop: 28 
   },
   footerText: { 
-    fontSize: 14, 
-    color: "#9AA4BF" 
+    fontSize: 14,
+    fontFamily: 'Rajdhani_500Medium', 
+    color: "#A3A3A3" 
   },
   footerLink: { 
     fontSize: 14, 
-    color: "#D97757", 
-    fontWeight: "700" 
+    color: "#4C4C4C", 
+    fontFamily: 'Rajdhani_700Bold' 
   },
 });

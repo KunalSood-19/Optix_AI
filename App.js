@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { View, ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+import { useFonts, Rajdhani_400Regular, Rajdhani_500Medium, Rajdhani_600SemiBold, Rajdhani_700Bold } from '@expo-google-fonts/rajdhani';
 
 import HomeScreen from "./src/screens/HomeScreen";
 import ScannerScreen from "./src/screens/ScannerScreen";
@@ -25,8 +25,10 @@ import QuizResultScreen from "./src/screens/QuizResultScreen";
 import StudyHistoryScreen from "./src/screens/StudyHistoryScreen";
 import MathSolverScreen from "./src/screens/MathSolverScreen";
 import HandwritingEditorScreen from "./src/screens/HandwritingEditorScreen";
+import CircleSearchEditorScreen from "./src/screens/CircleSearchEditorScreen";
 import MathHistoryScreen from "./src/screens/MathHistoryScreen";
 import HandwritingHistoryScreen from "./src/screens/HandwritingHistoryScreen";
+import AssistantScreen from "./src/screens/AssistantScreen";
 
 import { identifyObject } from "./src/services/geminiService";
 
@@ -39,6 +41,7 @@ const linking = {
   config: {
     screens: {
       ResetPassword: "reset-password",
+      Assistant: "assistant",
     },
   },
 };
@@ -70,6 +73,7 @@ function StudyStack() {
       <Stack.Screen name="StudyHistory" component={StudyHistoryScreen} />
       <Stack.Screen name="MathSolver" component={MathSolverScreen} />
       <Stack.Screen name="HandwritingEditor" component={HandwritingEditorScreen} />
+      
       <Stack.Screen name="MathHistory" component={MathHistoryScreen} />
       <Stack.Screen name="HandwritingHistory" component={HandwritingHistoryScreen} />
     </Stack.Navigator>
@@ -93,6 +97,8 @@ function AppStack() {
         component={ResultScreen}
       />
 
+      <Stack.Screen name="CircleSearchEditor" component={CircleSearchEditorScreen} options={{ presentation: 'fullScreenModal' }} />
+
       <Stack.Screen
         name="QRScanner"
         component={QRScannerScreen}
@@ -104,13 +110,24 @@ function AppStack() {
       />
 
       <Stack.Screen
+        name="Study"
+        component={StudyStack}
+      />
+
+      <Stack.Screen
         name="Agent"
         component={AgentScreen}
       />
 
       <Stack.Screen
-        name="Study"
-        component={StudyStack}
+        name="Assistant"
+        component={AssistantScreen}
+        options={{ 
+          presentation: "transparentModal", 
+          animation: "fade",
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' }
+        }}
       />
     </Stack.Navigator>
   );
@@ -142,10 +159,10 @@ export default function App() {
   const [checking, setChecking] = useState(true);
 
   let [fontsLoaded, fontError] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
+    Rajdhani_400Regular,
+    Rajdhani_500Medium,
+    Rajdhani_600SemiBold,
+    Rajdhani_700Bold,
   });
 
   useEffect(() => {
@@ -179,7 +196,7 @@ export default function App() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F4F5F9",
+          backgroundColor: "#050505", // Dark Theme Base
         }}
       >
         <ActivityIndicator
@@ -199,7 +216,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer linking={linking}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         {session ? <AppStack /> : <AuthStack />}
       </NavigationContainer>
     </SafeAreaProvider>

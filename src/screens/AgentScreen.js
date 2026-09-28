@@ -98,8 +98,9 @@ export default function AgentScreen({ route, navigation }) {
     setLoading(true);
 
     try {
-      const prompt = imageText
-        ? `\nImage Content:\n${imageText}\n\nQuestion:\n${userQuestion}\n\nAnswer ONLY using the image content. If the answer is not present in the image, say:\n"The uploaded image does not contain enough information."\n`
+      const contextContent = imageText || route?.params?.contextText;
+      const prompt = contextContent
+        ? `\nContext:\n${contextContent}\n\nQuestion:\n${userQuestion}\n\nAnswer ONLY using the provided context. If the answer is not present, say:\n"The provided context does not contain enough information."\n`
         : userQuestion;
 
       const response = await askAgent(prompt);
@@ -213,16 +214,15 @@ export default function AgentScreen({ route, navigation }) {
         
         {loading && (
           <View style={styles.loadingBubble}>
-            <ActivityIndicator size="small" color="#D97757" />
+            <ActivityIndicator size="small" color="#4C4C4C" />
             <Text style={styles.loadingText}>Optix is thinking...</Text>
           </View>
         )}
       </ScrollView>
 
-      {/* Floating Image context header layout status indicator */}
       {selectedImage && (
         <View style={styles.inlineImagePreviewHeader}>
-          <Ionicons name="document-text" size={16} color="#D97757" />
+          <Ionicons name="document-text" size={16} color="#4C4C4C" />
           <Text style={styles.inlineImagePreviewText}>Image processing context active</Text>
         </View>
       )}
@@ -231,7 +231,7 @@ export default function AgentScreen({ route, navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Ask Optix anything..."
-          placeholderTextColor="#8D8FA5"
+          placeholderTextColor="#A3A3A3"
           multiline
           value={question}
           onChangeText={setQuestion}
@@ -239,7 +239,7 @@ export default function AgentScreen({ route, navigation }) {
 
         <View style={styles.bottomBar}>
           <TouchableOpacity onPress={handleAttachment}>
-            <Ionicons name="add" size={28} color="#FFFFFF" />
+            <Ionicons name="add" size={28} color="#F4F4F4" />
           </TouchableOpacity>
 
           <View style={styles.rightIcons}>
@@ -248,7 +248,7 @@ export default function AgentScreen({ route, navigation }) {
                 Alert.alert("Coming Soon", "Voice support will be added soon.")
               }
             >
-              <Ionicons name="mic-outline" size={24} color="#FFFFFF" />
+              <Ionicons name="mic-outline" size={24} color="#F4F4F4" />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -256,7 +256,7 @@ export default function AgentScreen({ route, navigation }) {
               onPress={askQuestion}
               disabled={loading}
             >
-              <Ionicons name="arrow-up" size={22} color="#FFFFFF" />
+              <Ionicons name="arrow-up" size={22} color="#F4F4F4" />
             </TouchableOpacity>
           </View>
         </View>
@@ -268,18 +268,19 @@ export default function AgentScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#060B1A",
+    backgroundColor: "#050505",
     padding: 20,
   },
   heading: {
     fontSize: 34,
-    fontWeight: "700",
-    color: "#FFFFFF",
+    fontFamily: 'Rajdhani_700Bold',
+    color: "#F4F4F4",
     textAlign: "center",
     marginTop: 30,
   },
   subHeading: {
-    color: "#9AA4BF",
+    color: "#A3A3A3",
+    fontFamily: 'Rajdhani_500Medium',
     textAlign: "center",
     marginTop: 8,
     marginBottom: 20,
@@ -295,15 +296,18 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     alignSelf: "flex-end",
-    backgroundColor: "#D97757",
+    backgroundColor: "#4C4C4C",
   },
   agentBubble: {
     alignSelf: "flex-start",
-    backgroundColor: "#121826",
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.4)",
   },
   messageText: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium',
     lineHeight: 24,
   },
   imageBubbleWrapper: {
@@ -318,20 +322,23 @@ const styles = StyleSheet.create({
   loadingBubble: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#121826",
+    backgroundColor: "rgba(255,255,255,0.12)",
     padding: 15,
     borderRadius: 20,
     alignSelf: "flex-start",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.4)",
   },
   loadingText: {
-    color: "#FFFFFF",
+    color: "#F4F4F4",
+    fontFamily: 'Rajdhani_500Medium',
     marginLeft: 10,
   },
   inlineImagePreviewHeader: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    backgroundColor: "rgba(217, 119, 87, 0.15)",
+    backgroundColor: "rgba(77, 77, 77, 0.15)",
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
@@ -339,21 +346,22 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   inlineImagePreviewText: {
-    color: "#D97757",
+    color: "#4C4C4C",
     fontSize: 12,
-    fontWeight: "600",
+    fontFamily: 'Rajdhani_600SemiBold',
   },
   inputContainer: {
-    backgroundColor: "#121826",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderRadius: 28,
     padding: 20,
     borderWidth: 1,
-    borderColor: "rgba(108,99,255,0.2)",
+    borderColor: "rgba(255,255,255,0.5)",
   },
   input: {
     minHeight: 80,
-    color: "#FFFFFF",
+    color: "#F4F4F4",
     fontSize: 17,
+    fontFamily: 'Rajdhani_500Medium',
     textAlignVertical: "top",
   },
   bottomBar: {
@@ -370,7 +378,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#D97757",
+    backgroundColor: "#4C4C4C",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 15,

@@ -18,25 +18,34 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.kunalsood19.optix",
-      "versionCode": 2
+      "versionCode": 2,
+      "intentFilters": [
+        {
+          "action": "android.intent.action.ASSIST",
+          "category": [
+            "android.intent.category.DEFAULT"
+          ]
+        }
+      ],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "ios": {
       "buildNumber": "2"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "./withVoiceFix.js",
+      "./withAssistant.js"
     ],
-    "owner": "kunalsood19",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "extra": {
       "eas": {
         "projectId": "0ef14e16-d287-4bd7-904c-7feea130b3d8"
       }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/0ef14e16-d287-4bd7-904c-7feea130b3d8"
     }
   }
 }

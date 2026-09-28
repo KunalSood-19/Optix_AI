@@ -28,17 +28,17 @@ export default function StudyNotesScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1A1A2E" />
+          <Ionicons name="arrow-back" size={24} color="#F4F4F4" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Notes - {title}</Text>
         <TouchableOpacity style={styles.actionBtn} onPress={fetchNotes}>
-          <Ionicons name="refresh-outline" size={20} color="#009688" />
+          <Ionicons name="refresh-outline" size={20} color="#A3A3A3" />
         </TouchableOpacity>
       </View>
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#009688" />
+          <ActivityIndicator size="large" color="#A3A3A3" />
           <Text style={styles.loadingText}>Structuring study notes...</Text>
         </View>
       ) : (
@@ -55,16 +55,23 @@ export default function StudyNotesScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F5F9" },
+  container: { flex: 1, backgroundColor: "#050505" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  loadingText: { marginTop: 12, color: "#9E9E9E", fontSize: 16 },
-  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "#FFF", borderBottomWidth: 1, borderColor: "#EBEBEB" },
-  backBtn: { marginRight: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "700", color: "#1A1A2E", flex: 1 },
-  actionBtn: { padding: 8, backgroundColor: "#E0F2F1", borderRadius: 8 },
+  loadingText: { marginTop: 12, color: "#A3A3A3", fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', },
+  header: { flexDirection: "row", alignItems: "center", padding: 20, backgroundColor: "transparent", borderBottomWidth: 1, borderColor: "rgba(255,255,255,0.4)" },
+  backBtn: { marginRight: 15, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { fontSize: 18, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", flex: 1 },
+  actionBtn: { padding: 8, backgroundColor: "rgba(163, 163, 163, 0.2)", borderRadius: 8 },
   content: { padding: 20 },
-  card: { backgroundColor: "#FFF", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#EBEBEB" },
-  mdBody: { fontSize: 16, color: "#333", lineHeight: 26 },
-  mdH1: { fontSize: 22, fontWeight: "bold", color: "#1A1A2E", marginBottom: 10, marginTop: 10 },
-  mdH2: { fontSize: 18, fontWeight: "600", color: "#1A1A2E", marginBottom: 8, marginTop: 12 },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10, backgroundColor: "rgba(255,255,255,0.12)", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.5)" },
+  mdBody: { fontSize: 16,
+    fontFamily: 'Rajdhani_500Medium', color: "#E2E8F0", lineHeight: 26 },
+  mdH1: { fontSize: 22, fontFamily: 'Rajdhani_700Bold', color: "#F4F4F4", marginBottom: 10, marginTop: 10 },
+  mdH2: { fontSize: 18, fontFamily: 'Rajdhani_600SemiBold', color: "#F4F4F4", marginBottom: 8, marginTop: 12 },
 });
